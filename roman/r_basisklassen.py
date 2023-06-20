@@ -807,7 +807,7 @@ class PWM(object):
     def frequency(self, freq):
         '''Set PWM frequency'''
         self._debug_('Set frequency to %d' % freq)
-        self._frequency = freq
+        
         prescale_value = 25000000.0
         prescale_value /= 4096.0
         prescale_value /= float(freq)
@@ -901,7 +901,7 @@ def main(modus):
 
     if modus == 0:
         print('Der Servomotor wird nach rechts und links bewegt und dann auf geradeus ausgerichtet.')
-        fw = FrontWheels()
+        fw = ()
         fw.turn(45)
         time.sleep(.5)
         fw.turn(135)
