@@ -16,3 +16,6 @@ print(ingo.get_haarfarbe()) # Richtig gut. Ausgabe von attributen mit den sogn. 
 ingo.haare_faerben("Grün")
 print(ingo.anzahl_faerbungen)
 print(ingo.get_haarfarbe())
+
+ingo.altersbedingtes_schrumpfen(192)
+print(ingo.get_koerpergroesse())

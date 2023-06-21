@@ -6,6 +6,12 @@ class Mensch():
         self.koerpergroesse = koerpergroesse
         self.anzahl_faerbungen = 0
 
+    def altersbedingtes_schrumpfen(self, neue_koerpergroesse): # Setter-Methode für Attribut koerpergröße
+        self.koerpergroesse = neue_koerpergroesse
+
+    def get_koerpergroesse(self):
+        return self.koerpergroesse
+    
     def haare_faerben(self, farbe): # Setter-Methode für Haarfarbe = Ändern eines Attributes (Eigenschaft)
         self.haarfarbe = farbe
         self.anzahl_faerbungen = self.anzahl_faerbungen + 1

@@ -4,8 +4,12 @@ class BaseCar():
 
     def __init__(self):
         self.bw = basisklassen.BackWheels()
+        self.__direction = 0
 
-
+    @property
+    def direction(self):
+        return self.__direction
+    
     def stop(self):
         self.bw.stop()
 
@@ -18,9 +22,11 @@ class BaseCar():
         """
         self.bw.speed = geschwindigkeit
         if fahrtrichtung == 1:
+            self.__direction = 1
             self.bw.forward()
         elif fahrtrichtung == -1:
             self.bw.backward()
+            self.__direction == -1
         else:
             self.stop()
 
