@@ -13,6 +13,9 @@ print(f"Direction vor Setzen über setter: {mycar.direction}")
 mycar.speed = 50 # speed mit property-setter setzen
 print(f"Direction nach Setzen über setter: {mycar.direction}")
 print(f"Speed: {mycar.speed}") # speed über getter abfragen
+# print(f"Steering angle vor lenken: {mycar.steering_angle}")
+# mycar.steering_angle = 45
+# print(f"Steering angle nach lenken: {mycar.steering_angle}")
 time.sleep(3)
 
 print("drive aufrufen mit 30, 1 für 3 sek")

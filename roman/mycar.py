@@ -39,6 +39,7 @@ class BaseCar(object):
             self._direction = 0
             self.bw.stop()
 
+
     # Zugriff auf die Fahrtrichtung erhalten 
     @property
     def direction(self):
@@ -47,11 +48,11 @@ class BaseCar(object):
     # steering_angle: Setzen und Zugriff auf Lenkwinkel
     @property
     def steering_angle(self):
-        return self._steering_angle
+        return self.fw._angles
     
     @steering_angle.setter
     def steering_angle(self, angle):
-        self._steering_angle = angle
+        self.fw.turn(angle)
 
 
 
