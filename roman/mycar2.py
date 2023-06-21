@@ -8,28 +8,34 @@ class BaseCar(object):
         self.bw = r_basisklassen.BackWheels() # BackWheels aus basisklassen.py erzeugen -> die Hinterräder treiben an
         self.fw = r_basisklassen.FrontWheels()
         self.bw.speed = 0
+        self._speed = 0
         self._direction = 0
 
     # Methode zum Anhalten des Autos
     def stop(self):
         self.bw.stop()
-        self._speed = 0
         self._direction = 0
+        self._speed = 0
 
     # Setzen und Zugriff auf Geschwindigkeit
     @property
     def speed(self):
         return self.bw._speed
 
-    @speed.setter # setzt nur speed, direction bleibt so wie es vorher mal war
+    @speed.setter
     def speed(self, speed):
-        self.bw.speed = speed
-
+        self._speed = speed
+        if self._speed == 0:
+            self._direction = 0
+        else:
+            self.drive(self._speed, self._direction)
         
+
+
+
     # Methode zum Setzen von Geschwindigkeit und Fahrtrichtung der Hinterräder
     def drive(self, geschwindigkeit: int, fahrtrichtung: int):
         
-        self.speed = geschwindigkeit
         if fahrtrichtung == 1:
             self._direction = 1
             self.bw.forward()
@@ -40,11 +46,8 @@ class BaseCar(object):
             self._direction = 0
             self.bw.stop()
 
-    def lenken(self, angle: int):
-        self.fw.turn(angle)
-        
-    def lenktest(self):
-        self.fw.test()
+        #self._speed = geschwindigkeit
+        self.bw.speed = geschwindigkeit
 
     # Zugriff auf die Fahrtrichtung erhalten 
     @property
