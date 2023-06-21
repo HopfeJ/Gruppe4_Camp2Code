@@ -25,7 +25,6 @@ class BaseCar(object):
     def speed(self, speed):
         self.bw.speed = speed
 
-        
     # Methode zum Setzen von Geschwindigkeit und Fahrtrichtung der Hinterräder
     def drive(self, geschwindigkeit: int, fahrtrichtung: int):
         
@@ -39,12 +38,6 @@ class BaseCar(object):
         else:
             self._direction = 0
             self.bw.stop()
-
-    def lenken(self, angle: int):
-        self.fw.turn(angle)
-        
-    def lenktest(self):
-        self.fw.test()
 
     # Zugriff auf die Fahrtrichtung erhalten 
     @property
