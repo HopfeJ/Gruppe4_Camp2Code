@@ -7,19 +7,33 @@ class BaseCar(object):
     def __init__(self) -> None:
         self.bw = r_basisklassen.BackWheels() # BackWheels aus basisklassen.py erzeugen -> die Hinterräder treiben an
         self.fw = r_basisklassen.FrontWheels()
+        self.bw.speed = 0
 
     # Methode zum Anhalten des Autos
     def stop(self):
         self.bw.stop()
+
+    # Setzen und Zugriff auf Geschwindigkeit
+    @property
+    def speed(self):
+        return self.bw._speed
+
+    @speed.setter
+    def speed(self, speed):
+        self.bw.speed = speed
         
     # Methode zum Setzen von Geschwindigkeit und Fahrtrichtung der Hinterräder
     def drive(self, geschwindigkeit: int, fahrtrichtung: int):
-        self.bw.speed = geschwindigkeit
+        
+        self.speed = geschwindigkeit
         if fahrtrichtung == 1:
+            self._direction = 1
             self.bw.forward()
         elif fahrtrichtung == -1:
+            self._direction = -1
             self.bw.backward()
         else:
+            self._direction = 0
             self.bw.stop()
 
     def lenken(self, angle: int):
@@ -28,7 +42,7 @@ class BaseCar(object):
     def lenktest(self):
         self.fw.test()
 
-    # Zugriff auf die Fahrtrichtung (1: vorwärts, 0: Stillstand, -1: Rückwärts)    
+    # Zugriff auf die Fahrtrichtung erhalten 
     @property
     def direction(self):
         return self._direction
@@ -42,30 +56,12 @@ class BaseCar(object):
     def steering_angle(self, angle):
         self._steering_angle = angle
 
-    # Setzen und Zugriff auf Geschwindigkeit
-    @property
-    def speed(self):
-        return self._speed
-
-    @speed.setter
-    def speed(self, speed):
-        self._speed = speed
 
 
-# Hauptprogramms
-# Auto initialisieren:
-mycar = BaseCar()
 
-# Fahrparcours #1 aus Lastenheft
-def fahrparcours1(speed, richtung, dauer):
-    mycar.drive(speed, richtung)
-    
-    time.sleep(dauer)
-    mycar.stop()
 
-#fahrparcours1(30, 1, 10)
-#mycar.steering_angle = 90
-#print(mycar.steering_angle)
+
+
 
 
 
