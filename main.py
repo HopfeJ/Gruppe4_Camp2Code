@@ -3,13 +3,16 @@ import time
 
 my_car = base_car.BaseCar()
 
-my_car.speed = 50
-print(my_car.speed)
-time.sleep(3)
-my_car.drive(40, 1)
-print(my_car.speed)
-time.sleep(3)
-my_car.drive(100, 1)
-print(my_car.speed)
-time.sleep(3.5)
-my_car.stop()
+# my_car.speed = 50
+# print(my_car.speed)
+# time.sleep(3)
+# my_car.drive(40, 1)
+# print(my_car.speed)
+# time.sleep(3)
+# my_car.drive(100, 1)
+# print(my_car.speed)
+# time.sleep(3.5)
+# my_car.stop()
+# my_car.steering_angle = 110
+
+
