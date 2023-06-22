@@ -14,5 +14,10 @@ my_car = base_car.BaseCar()
 # time.sleep(3.5)
 # my_car.stop()
 # my_car.steering_angle = 110
+for i in range(100):
+    my_car.steering_angle = 90
+    time.sleep(1)
+
+
 
 

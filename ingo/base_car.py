@@ -4,8 +4,24 @@ class BaseCar():
 
     def __init__(self):
         self.antriebsraeder = basisklassen.BackWheels()
+        self.lenkungsraeder = basisklassen.FrontWheels(30)
         self.__direction = 0
         self.__speed = 0
+        self.__steering_angle = 90
+
+    @property
+    def steering_angle(self):
+        return self.__steering_angle
+    
+    @steering_angle.setter
+    def steering_angle(self, steering_angle):
+        self.__steering_angle = steering_angle
+        self.lenkungsraeder.turn(self.__steering_angle)
+
+    def stop(self):
+        self.antriebsraeder.stop()
+        self.__speed = 0
+        self.__direction = 0
 
     @property
     def speed(self): # Getter Methode für Attribut speed
@@ -26,11 +42,6 @@ class BaseCar():
     def direction(self):
         return self.__direction
     
-    def stop(self):
-        self.antriebsraeder.stop()
-        self.__speed = 0
-        self.__direction = 0
-
     def drive(self, geschwindigkeit: int, fahrtrichtung: int):
         """
             Args:

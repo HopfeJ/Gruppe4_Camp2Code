@@ -4,7 +4,7 @@ class BaseCar():
 
     def __init__(self):
         self.antriebsraeder = basisklassen.BackWheels()
-        self.lenkungsraeder = basisklassen.FrontWheels(-20)
+        self.lenkungsraeder = basisklassen.FrontWheels(30)
         self.__direction = 0
         self.__speed = 0
         self.__steering_angle = 90
