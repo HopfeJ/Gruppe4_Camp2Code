@@ -901,7 +901,7 @@ def main(modus):
 
     if modus == 0:
         print('Der Servomotor wird nach rechts und links bewegt und dann auf geradeus ausgerichtet.')
-        fw = ()
+        fw = FrontWheels()
         fw.turn(45)
         time.sleep(.5)
         fw.turn(135)
