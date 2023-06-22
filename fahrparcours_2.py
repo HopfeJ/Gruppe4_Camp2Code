@@ -1,7 +1,7 @@
-import BaseCar
+import base_car
 import time
 
-my_car = BaseCar.BaseCar()
+my_car = base_car.BaseCar()
 
 def fahrparcours_2(my_car):
     my_car.drive(50,1)

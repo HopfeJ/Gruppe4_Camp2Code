@@ -37,12 +37,23 @@ class BaseCar (object):
     def speed(self,geschwindigkeit):
         self.bw.speed = geschwindigkeit
         
-    def angle1(self,a: int):
-        self.fw = basisklassen.FrontWheels()
-        self.fw.turn = a
+    def angle(self,richtung: int):
+        self.fw.turn(richtung)
+        
+   
+            
+class SonicCar(BaseCar):
+    
+    def __init__(self) -> None:
+        self.ultra =basisklassen.Ultrasonic()
+        
+    
+    
+    
+              
         
 car= BaseCar()                      
-
+brot = BaseCar()
 modus = {
         1: 'Fahrparcour 1:',
         2: 'Fahrparcour 2:',
@@ -74,15 +85,20 @@ while True:
     if modi == 2:
         print('ja ja jetzt gehts los mit dem Fahrparcour 2')
         car.drive(60,1)
-        car.angle1(45)
+        car.angle(45)
         time.sleep(3)
-        car.angle1(90)
+        car.angle(90)
         car.stop()
         time.sleep(1)
+        car.angle(45)
         car.drive(60,-1)
         time.sleep(3)
         car.stop()    
-        
+    if modi == 3 :
+        print('ja ja jetzt gehts los mit dem Fahrparcour 3')
+        brot.drive(60,1)
+        time.sleep(5)
+        brot.stop()   
         
     elif modi == 9:
         print('Programm wird beendet:')
@@ -90,17 +106,3 @@ while True:
     
     else:
         print('Getroffene Auswahl nicht möglich.')
-    
-
-
-
-
-
-        
-        
-
-
-
-
-    
-
