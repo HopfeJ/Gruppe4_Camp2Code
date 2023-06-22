@@ -1,34 +1,68 @@
 import basisklassen
 import time
 
-class BaseCar(object):
+
+class BaseCar():
 
     def __init__(self):
-            self.my_back_wheels = basisklassen.BackWheels()
+        self.antriebsraeder = basisklassen.BackWheels()
+        self.lenkungsraeder = basisklassen.FrontWheels(30)
+        self.__direction = 0
+        self.__speed = 0
+        self.__steering_angle = 90
+
+    @property
+    def steering_angle(self):
+        return self.__steering_angle
+    
+    @steering_angle.setter
+    def steering_angle(self, steering_angle):
+        self.__steering_angle = steering_angle
+        self.lenkungsraeder.turn(self.__steering_angle)
 
     def stop(self):
-        self.my_back_wheels.stop()
+        self.antriebsraeder.stop()
+        self.__speed = 0
+        self.__direction = 0
 
-    def drive(self, geschwindigkeit: int, fahrtrichtung: int):
-
-        """
-
-        Argumente:
-
-        geschwindigkeit: ganzzahliger Wert zw. 0(Stop) und 100(Max. Speed)
-        fahrtichtung: 1: vorwärts, 0: stop, -1: rückwärts
-
-        """
-
-        self.my_back_wheels.speed = geschwindigkeit
-        if fahrtrichtung == 1: 
-            self.my_back_wheels.forward()
-        elif fahrtrichtung == -1:
-            self.my_back_wheels.backward()
+    @property
+    def speed(self): # Getter Methode für Attribut speed
+        return self.__speed
+    
+    @speed.setter
+    def speed(self, speed):
+        self.__speed = speed
+        if self.__speed == 0: # Wenn speed null, dann fährt das Auto nicht, also direction = 0
+            self.__direction == 0
+        elif self.__speed >0 and speed <101 and self.__direction == 0:
+            print("Fehlende Fahrtrichtung. Speed auf null gesetzt!")
+            self.__speed = 0
         else:
-            self.my_back_wheels.stop()
+            self.drive(self.__speed, self.__direction)
 
-my_car = BaseCar()
-my_car.drive(100, 1)
-time.sleep(10)
-my_car.stop()
+    @property
+    def direction(self):
+        return self.__direction
+    
+    def drive(self, geschwindigkeit: int, fahrtrichtung: int):
+        """
+            Args:
+
+            geschwindigkeit: Ein ganzzahliger Wert zwischen 0 (stop) und 100 (Max-Speed)
+            fahrtrichtung: 1: vorwärts, 0: stop, -1: rückwärts
+        """
+        if fahrtrichtung == 1:
+            self.__direction = 1
+            self.__speed = geschwindigkeit
+            self.antriebsraeder.speed = self.__speed
+            self.antriebsraeder.forward()
+        elif fahrtrichtung == -1:
+            self.__direction == -1
+            self.__speed = geschwindigkeit
+            self.antriebsraeder.speed = self.__speed
+            self.antriebsraeder.backward()
+        elif fahrtrichtung == 0:
+            self.stop()
+        else:
+            self.__direction == 0
+            return
