@@ -3,9 +3,10 @@ import basisklassen
 from datetime import datetime
 import time
 import random
+import csv
 
 
-class Sonic_Car(BaseCar):
+class SonicCar(BaseCar):
    
     
     def __init__(self):
@@ -34,27 +35,11 @@ class Sonic_Car(BaseCar):
                 self.steering_angle = 90
                 self.stop()
                 break
-    
-    
-            
-            
-            
-car = Sonic_Car()
+    def save_data(self,speed,direction,steering_angle,distance):
+        with open('fahrdaten.txt','a',encoding='utf-8') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerow([speed,direction,steering_angle,distance])
 
-car.steering_angle = 90
-car.drive(30,1) #auto fährt los
-car.distance_schleife(3) #beginn schleife
-car.drive(50,1)
-#car.steering_angle = 110
-car.distance_schleife(3)
-car.drive(80,1)
-car.distance_schleife(3)
-car.drive(100,1)
-car.distance_schleife(3)
-
-car.stop()
-#if car.distance < 10 :
-#    car.stop()
-     
-#time.sleep(2)
-#car.stop()  
+if __name__ == '__main__':
+    car = SonicCar()
+    car.save_data(50,1,90,290)
