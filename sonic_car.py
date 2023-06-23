@@ -1,7 +1,8 @@
 from base_car import BaseCar
 import basisklassen
+from datetime import datetime
 import time
-
+import random
 
 
 class Sonic_Car(BaseCar):
@@ -18,8 +19,9 @@ class Sonic_Car(BaseCar):
         self.ultraschall.stop()
         return self.__distance
     
-    def distance_schleife(self):
-        while True :
+    def distance_schleife(self,zeit:int):
+        start = datetime.now()
+        while (datetime.now()-start).seconds<= zeit:
             abstand = self.ultraschall.distance()
             time.sleep(0.2)
             print(abstand)
@@ -27,21 +29,29 @@ class Sonic_Car(BaseCar):
                 self.ultraschall.stop()
                 self.stop()
                 self.drive(30,-1)
-                self.steering_angle = 110
-                time.sleep(3)
+                self.steering_angle = random.randrange(0,180)
+                time.sleep(2)
                 self.steering_angle = 90
                 self.stop()
                 break
     
     
+            
+            
+            
 car = Sonic_Car()
 
-
-car.drive(60,1) #auto fährt los
-car.distance_schleife() #beginn schleife
+car.steering_angle = 90
+car.drive(30,1) #auto fährt los
+car.distance_schleife(3) #beginn schleife
 car.drive(50,1)
-car.steering_angle = 110
-car.distance_schleife()
+#car.steering_angle = 110
+car.distance_schleife(3)
+car.drive(80,1)
+car.distance_schleife(3)
+car.drive(100,1)
+car.distance_schleife(3)
+
 car.stop()
 #if car.distance < 10 :
 #    car.stop()

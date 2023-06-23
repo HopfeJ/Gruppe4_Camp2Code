@@ -1,7 +1,9 @@
-import base_car as base_car
+import BaseCar
 import time
+#import SonicCar
 
-my_car = base_car.BaseCar()
+my_car = BaseCar.BaseCar
+#my_car = SonicCar.SonicCar()
 
 # my_car.speed = 50
 # print(my_car.speed)
@@ -18,6 +20,4 @@ for i in range(100):
     my_car.steering_angle = 90
     time.sleep(1)
 
-
-
-
+#print(my_car.abstand)
