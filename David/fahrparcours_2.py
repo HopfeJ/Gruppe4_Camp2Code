@@ -4,6 +4,7 @@ import time
 my_car = BaseCar.BaseCar()
 
 def fahrparcours_2(my_car):
+# vorwärts
     my_car.drive(50,1)
     time.sleep(1)
     my_car.steering_angle = 135
@@ -17,6 +18,7 @@ def fahrparcours_2(my_car):
     time.sleep(1)
     my_car.stop()
 
+# rückwärts
     my_car.drive(50,1)
     time.sleep(1)
     my_car.steering_angle = 45
