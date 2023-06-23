@@ -13,19 +13,20 @@ class Sonic_Car(BaseCar):
         self.__distance = None
         
     @property   
-    def distance(self):
+    def last_distance_measured(self):
         #self.__distance = self.ultraschall.distance()
         #self.ultraschall.stop()
-        return self.__distance
+        return self.__last_distance_measured
     
     def get_distance(self):
-        self.__distance = self.ultraschall.distance()
+        self.__last_distance_measured = self.ultraschall.distance()
         self.ultraschall.stop()
-        return self.__distance
+        return self.__last_distance_measured
         
     def distance_schleife(self):
         while True :
-            abstand = self.ultraschall.distance() 
+            #abstand = self.ultraschall.distance() 
+            abstand = self.get_distance()
             time.sleep(0.2)
             print(abstand)
 
