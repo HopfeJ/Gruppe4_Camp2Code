@@ -15,5 +15,5 @@ class SonicCar(BaseCar):
     def abstand(self): # getter methode für abstand
         return self.__abstand
 
-#y_car = SonicCar()
+#my_car = SonicCar()
 #my_car.abstand
