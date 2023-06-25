@@ -224,7 +224,7 @@ class FrontWheels(object):
     MAX_TURNING_ANGLE = 45
     BUS_NUMBER = 1
 
-    def __init__(self, turning_offset: int = 0) -> None:
+    def __init__(self, turning_offset: int = -30) -> None:    # -30 sollte passen, Standard = 0
         """Setup channels and basic stuff
 
         Args:
@@ -901,7 +901,7 @@ def main(modus):
 
     if modus == 0:
         print('Der Servomotor wird nach rechts und links bewegt und dann auf geradeus ausgerichtet.')
-        fw = FrontWheels()
+        fw = FrontWheels() 
         fw.turn(45)
         time.sleep(.5)
         fw.turn(135)
