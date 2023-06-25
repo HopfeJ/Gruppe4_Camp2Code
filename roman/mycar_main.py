@@ -73,12 +73,12 @@ def fahrparcours3(mycar2):
 def fahrparcours4(mycar2):
 
     # Auto soll während laufender Fahrt Speed und Direction verändern können
-    mycar2.drive(50, 1)
+    mycar2.drive(random.randint(30,100), 1)
     print("speed aktuell", mycar2.speed)
     print("direction aktuell", mycar2.direction)
     mycar2.log_data(datetime.now(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "start_driving")
     mycar2.measure_distance()
-    time.sleep(60)
+    time.sleep(20)
     mycar2.stop()
     print("car stop")
     mycar2.log_data(datetime.now(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "car_stop")

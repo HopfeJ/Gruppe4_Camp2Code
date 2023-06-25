@@ -25,7 +25,6 @@ class BaseCar(object):
 
     # Methode zum Setzen von Geschwindigkeit und Fahrtrichtung der Hinterräder
     def drive(self, geschwindigkeit: int, fahrtrichtung: int):
-        
         self.speed = geschwindigkeit
         self.set_direction(fahrtrichtung)
 
@@ -113,7 +112,7 @@ class SonicCar(BaseCar):
                 
                 print("weiterfahren")
                 self.direction = 1 # wieder Vorwärts
-                self.speed = 50
+                self.speed = random.randint(30, 80)
                 self.steering_angle = 90 # wieder gerade aus
                 self.log_data(datetime.now(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "continue_driving")
                 #break
