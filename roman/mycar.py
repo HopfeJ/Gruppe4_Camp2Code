@@ -8,7 +8,6 @@ import os
 os.chdir("/home/pi/Gruppe4_Camp2Code/roman")
 
 
-
 class BaseCar(object):
 
     def __init__(self) -> None:

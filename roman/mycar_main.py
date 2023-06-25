@@ -97,11 +97,6 @@ def fahrparcours4(mycar2):
     # mycar2.log_data(datetime.now(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "change_direction")
     # time.sleep(3)
 
-
-
-
-    # Fehlmessungen noch abhandeln!
-
     # print(mycar2.current_distance)
     # time.sleep(3)
     # mycar2.stop()
@@ -157,5 +152,3 @@ def test(mycar):
 
 #fahrparcours2(mycar)
 fahrparcours4(mycar2)
-#lenk_test(mycar)
-
