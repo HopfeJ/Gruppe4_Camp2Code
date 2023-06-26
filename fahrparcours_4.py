@@ -27,7 +27,7 @@ def fahrparcours_4(my_car):
 
     if zaehler == 1:
         my_car.stop()  
-
+        my_car.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, 4)
 
 
 if __name__ == "__main__":
