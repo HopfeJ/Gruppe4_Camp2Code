@@ -76,30 +76,8 @@ def fahrparcours4(mycar2):
     mycar2.drive(random.randint(30,100), 1)
     print("speed aktuell", mycar2.speed)
     print("direction aktuell", mycar2.direction)
-    mycar2.log_data(datetime.now(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "start_driving")
-    mycar2.measure_distance()
-    time.sleep(20)
-    mycar2.stop()
-    print("car stop")
-    mycar2.log_data(datetime.now(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "car_stop")
-
-    # time.sleep(3)
-
-    # mycar2.speed = 50
-    # print("speed aktuell", mycar2.speed)
-    # print("direction aktuell", mycar2.direction)
-    # mycar2.log_data(datetime.now(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "change_speed")
-    # time.sleep(3)
-
-    # mycar2.direction = -1
-    # print("speed aktuell", mycar2.speed)
-    # print("direction aktuell", mycar2.direction)
-    # mycar2.log_data(datetime.now(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "change_direction")
-    # time.sleep(3)
-
-    # print(mycar2.current_distance)
-    # time.sleep(3)
-    # mycar2.stop()
+    mycar2.log_data(mycar2.zeitstempel(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "start_driving")
+    mycar2.measure_distance(10)
 
 def test(mycar):
     # test
