@@ -31,17 +31,22 @@ class SonicCar(BaseCar):
                 self.ultraschall.stop()
                 self.stop()
                 self.drive(30,-1)
-                self.save_data(self.speed, self.direction, self.steering_angle, self.distance)
+                self.save_data(self.speed, self.direction, self.steering_angle, abstand)
                 self.steering_angle = random.choice(lenkwinkel_list)
                 time.sleep(2)
                 self.steering_angle = 90
                 self.stop()
                 break
+    
+    def create_data_table(self):
+        with open('fahrdaten.txt', 'w', encoding='utf-8') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerow(["Geschwindigkeit", "Fahrtrichtung", "Lenkwinkel", "Abstand", "Zeitstempel", "Fahrparcours"])
 
-    def save_data(self,speed,direction,steering_angle,distance):
+    def save_data(self,speed,direction,steering_angle,distance, fahrparcours):
         with open('fahrdaten.txt','a',encoding='utf-8') as file:
             writer = csv.writer(file, delimiter=',')
-            writer.writerow([speed,direction,steering_angle,distance,datetime.now().replace(microsecond=0)])
+            writer.writerow([speed,direction,steering_angle,distance,datetime.now().replace(microsecond=0), fahrparcours])
 
 if __name__ == '__main__':
     car = SonicCar()
