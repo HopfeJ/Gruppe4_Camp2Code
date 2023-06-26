@@ -31,7 +31,7 @@ class SonicCar(BaseCar):
                 self.ultraschall.stop()
                 self.stop()
                 self.drive(30,-1)
-                self.save_data(self.speed, self.direction, self.steering_angle, abstand)
+                self.save_data(self.speed, self.direction, self.steering_angle, abstand, 4)
                 self.steering_angle = random.choice(lenkwinkel_list)
                 time.sleep(2)
                 self.steering_angle = 90
