@@ -21,24 +21,27 @@ class SonicCar(BaseCar):
         return self.__distance
     
     def distance_schleife(self,zeit:int):
+        lenkwinkel_list =[0,180] 
         start = datetime.now()
         while (datetime.now()-start).seconds<= zeit:
             abstand = self.ultraschall.distance()
             time.sleep(0.2)
             print(abstand)
-            if abstand < 10:
+            if abstand < 15 and abstand > 0:
                 self.ultraschall.stop()
                 self.stop()
                 self.drive(30,-1)
-                self.steering_angle = random.randrange(0,180)
+                self.save_data(self.speed, self.direction, self.steering_angle, self.distance)
+                self.steering_angle = random.choice(lenkwinkel_list)
                 time.sleep(2)
                 self.steering_angle = 90
                 self.stop()
                 break
+
     def save_data(self,speed,direction,steering_angle,distance):
         with open('fahrdaten.txt','a',encoding='utf-8') as file:
             writer = csv.writer(file, delimiter=',')
-            writer.writerow([speed,direction,steering_angle,distance])
+            writer.writerow([speed,direction,steering_angle,distance,datetime.now().replace(microsecond=0)])
 
 if __name__ == '__main__':
     car = SonicCar()
