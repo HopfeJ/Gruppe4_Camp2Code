@@ -25,6 +25,7 @@ class BaseCar(object):
 
     # Methode zum Setzen von Geschwindigkeit und Fahrtrichtung der Hinterräder
     def drive(self, geschwindigkeit: int, fahrtrichtung: int):
+
         self.speed = geschwindigkeit
         self.set_direction(fahrtrichtung)
 
@@ -85,39 +86,47 @@ class SonicCar(BaseCar):
         self.sonic_sensor.stop()
         return self.__last_distance_measured
     
+    def zeitstempel(self):
+        return datetime.now().replace(microsecond=0)
+
     #Schleife neu für Fahrparcours4
-    def measure_distance(self):
-        while True:
+    def measure_distance(self, dauer):
+        start_time = time.time()
+        while time.time() - start_time < dauer:
             abstand = self.get_distance()
             time.sleep(0.2)
             print(abstand)
             if abstand < 0:
                 print(f"Sensor-Fehler #{abstand}")
-                self.log_data(datetime.now(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "supersonic_sensor_error")
+                self.log_data(self.zeitstempel(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "supersonic_sensor_error")
             elif abstand < 10: # Hinderniss erkannt:
                 #self.stop()
                 print("Hinderniss erkannt!")
-                self.log_data(datetime.now(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "Hinderniss")
+                self.log_data(self.zeitstempel(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "Hinderniss")
                 
                 print("zurücksetzen")
                 self.direction = -1 # Rückwärtsgang
                 self.speed = 30
-                left_or_right = random.randint(1, 2)
-                if left_or_right == 1:
-                    self.steering_angle = 135 # max. Lenkeinschlag setzen
-                else:
-                    self.steering_angle = 45
-                self.log_data(datetime.now(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "set_back")
+                self.steering_angle = 45
+                # left_or_right = random.randint(1, 2)
+                # if left_or_right == 1:
+                #     self.steering_angle = 135 # max. Lenkeinschlag setzen
+                # else:
+                #     self.steering_angle = 45
+                self.log_data(self.zeitstempel(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "set_back")
                 time.sleep(3)
                 
                 print("weiterfahren")
                 self.direction = 1 # wieder Vorwärts
                 self.speed = random.randint(30, 80)
                 self.steering_angle = 90 # wieder gerade aus
-                self.log_data(datetime.now(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "continue_driving")
+                self.log_data(self.zeitstempel(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "continue_driving")
                 #break
+        
+        print("Schleife gestopp!")
         self.sonic_sensor.stop()
-        #self.stop()
+        self.stop()
+        self.log_data(self.zeitstempel(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "car_stop")
 
     # #Schleife ALT:
     # def BAKUP_measure_distance(self):
