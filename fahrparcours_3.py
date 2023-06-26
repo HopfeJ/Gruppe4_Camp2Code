@@ -9,8 +9,8 @@ my_car.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.d
 while True:
     print(my_car.distance)
     time.sleep(0.2)
-    if my_car.distance < 10:
-        print(f'Fehlerhaftes ergebnis {my_car.distance}')
+    if my_car.distance < 15 and my_car.distance > 0:
+        print(f'Ergebnis Stop (Hindernis) {my_car.distance}')
         my_car.stop()
         my_car.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance)
         break
