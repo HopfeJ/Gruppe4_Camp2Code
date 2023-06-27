@@ -9,8 +9,9 @@ os.chdir("/home/pi/Gruppe4_Camp2Code/ingo")
 my_car = sonic_car.SonicCar()
 
 def fahrparcours_3(my_car):
+    my_car.create_data_table()
     my_car.drive(40,1)
-    my_car.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance)
+    my_car.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, 3)
 
     while True:
         distance = my_car.distance
@@ -20,7 +21,7 @@ def fahrparcours_3(my_car):
             break
 
     my_car.stop()
-    my_car.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance)
+    my_car.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, 3)
 
 if __name__ == "__main__":
     fahrparcours_3(my_car)
