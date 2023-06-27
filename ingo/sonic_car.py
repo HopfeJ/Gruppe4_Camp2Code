@@ -14,6 +14,7 @@ class SonicCar(BaseCar):
     @property
     def distance(self):
         self.__distance = self.ultraschall_sensor.distance()
+        self.ultraschall_sensor.stop()
         return self.__distance
 
     def save_data(self, speed, direction, steering_angle, distance):
