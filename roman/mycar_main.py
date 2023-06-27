@@ -77,7 +77,7 @@ def fahrparcours4(mycar2):
     print("speed aktuell", mycar2.speed)
     print("direction aktuell", mycar2.direction)
     mycar2.log_data(mycar2.zeitstempel(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "start_driving")
-    mycar2.measure_distance(10)
+    mycar2.measure_distance(20)
 
 def test(mycar):
     # test
