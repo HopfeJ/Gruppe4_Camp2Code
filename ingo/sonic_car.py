@@ -1,7 +1,6 @@
 from base_car import BaseCar
 import basisklassen
-import pandas as pd
-import numpy as np
+from datetime import datetime
 import csv
 
 class SonicCar(BaseCar):
@@ -17,10 +16,15 @@ class SonicCar(BaseCar):
         self.ultraschall_sensor.stop()
         return self.__distance
 
-    def save_data(self, speed, direction, steering_angle, distance):
-        with open("fahrdaten.txt", "a", encoding='utf-8') as file:
-            writer = csv.writer(file, delimiter=",")
-            writer.writerow([str(speed), str(direction), str(steering_angle), str(distance)])
+    def create_data_table(self):
+        with open('fahrdaten.txt', 'w', encoding='utf-8') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerow(["Geschwindigkeit", "Fahrtrichtung", "Lenkwinkel", "Abstand", "Zeitstempel", "Fahrparcours"])
+
+    def save_data(self,speed,direction,steering_angle,distance, fahrparcours):
+        with open('fahrdaten.txt','a',encoding='utf-8') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerow([speed,direction,steering_angle,distance,datetime.now().replace(microsecond=0), fahrparcours])
 
 if __name__ == "__main__":
     my_car = SonicCar()
