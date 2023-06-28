@@ -1,10 +1,6 @@
 from sonic_car import SonicCar
 import time
 
-
-my_car = SonicCar()
-
-
 def fahrparcours_4(my_car):
     my_car.create_data_table()
     zaehler = 0
@@ -31,4 +27,5 @@ def fahrparcours_4(my_car):
 
 
 if __name__ == "__main__":
+    my_car = SonicCar()
     fahrparcours_4(my_car)      

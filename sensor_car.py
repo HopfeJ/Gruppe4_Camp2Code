@@ -13,7 +13,7 @@ class SensorCar(SonicCar):
         return self.line_sensor.get_average()
     
 
-    def auswertung_sensordaten(self):
+    def drive_with_line_follower(self):
         if self.sensordaten[0] < 5:
             print('Links ist es dunkel.')
             self.steering_angle = 45
@@ -56,8 +56,9 @@ if __name__ == '__main__':
     my_car = SensorCar()
     # print(my_car.line_sensor.test())
     print(my_car.sensordaten)
-    my_car.steering_angle = 90
     
-    my_car.drive(40,1)
+    my_car.drive(40,1) # Volle Fahrt voraus
+    my_car.steering_angle = 90 # Räder gerade stellen
+    
     while True:
         my_car.auswertung_sensordaten()
