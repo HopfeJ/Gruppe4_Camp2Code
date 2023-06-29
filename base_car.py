@@ -42,10 +42,6 @@ class BaseCar():
     def direction(self):
         return self.__direction
     
-    @direction.setter
-    def direction(self, new_direction):
-        self.__direction = new_direction
-    
     def drive(self, geschwindigkeit: int, fahrtrichtung: int):
         """
             Args:
@@ -54,12 +50,12 @@ class BaseCar():
             fahrtrichtung: 1: vorwärts, 0: stop, -1: rückwärts
         """
         if fahrtrichtung == 1:
-            self.direction = fahrtrichtung
+            self.__direction = 1
             self.__speed = geschwindigkeit
             self.antriebsraeder.speed = self.__speed
             self.antriebsraeder.forward()
         elif fahrtrichtung == -1:
-            self.direction = fahrtrichtung
+            self.__direction = -1
             self.__speed = geschwindigkeit
             self.antriebsraeder.speed = self.__speed
             self.antriebsraeder.backward()
@@ -67,9 +63,6 @@ class BaseCar():
             self.stop()
         else:
             self.__direction == 0
-            return
-            
-        
         
        
 
