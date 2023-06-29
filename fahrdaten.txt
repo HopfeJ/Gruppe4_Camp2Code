@@ -1,7 +1,1 @@
-Geschwindigkeit,Fahrtrichtung,Lenkwinkel,Abstand,Zeitstempel,Fahrparcours
-50,1,90,763,2023-06-28 15:34:35,4
-80,1,90,-2,2023-06-28 15:34:39,4
-50,1,60,-2,2023-06-28 15:34:43,4
-60,1,90,-2,2023-06-28 15:34:46,4
-30,0,90,7,2023-06-28 15:34:55,4
-0,0,90,219,2023-06-28 15:34:57,4
+Geschwindigkeit,Fahrtrichtung,Lenkwinkel,Abstand,Zeitstempel,Fahrparcours,Sensordaten
