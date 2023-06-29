@@ -88,6 +88,7 @@ class Ultrasonic(object):
             else:
                 unit = 'cm'
             print('{} : {} {}'.format(i, distance, unit))
+            self.stop()
             time.sleep(.5)
 class Infrared(object):
     """A class for the SunFounder infrared module.
@@ -249,7 +250,7 @@ class FrontWheels(object):
         self._angles = {"left": self._min_angle,
                         "straight": self._straight_angle, "right": self._max_angle}
 
-    def turn(self, angle: int) -> int:
+    def turn(self, angle: int) -> None:
         """Turn the front wheels to the given angle. Sets steering angle 'angle' as Int in the interval of 45-135° (90° straight ahead).
 
         Args:
