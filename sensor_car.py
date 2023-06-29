@@ -26,47 +26,47 @@ class SensorCar(SonicCar):
 
     def drive_with_line_follower(self, fahrparcours):
         if self.sensordaten[0] < 5:
-            print('Links ist es dunkel.')
+            # print('Links ist es dunkel.')
             self.steering_angle = 45
         elif self.sensordaten[1] < 5:
-            print('Links Mitte ist es dunkel.')
+            # print('Links Mitte ist es dunkel.')
             self.steering_angle = 70
         elif self.sensordaten[2] < 5:
-            print("In der Mitte ist es dunkel.")
+            # print("In der Mitte ist es dunkel.")
             self.steering_angle = 90
         
         if self.sensordaten[4] < 5:
-            print('Rechts ist es dunkel.')
+            # print('Rechts ist es dunkel.')
             self.steering_angle = 135
         elif self.sensordaten[3] < 5:
-            print('Rechts Mitte ist es dunkel.')
+            # print('Rechts Mitte ist es dunkel.')
             self.steering_angle = 115
         elif self.sensordaten[2] < 5:
-            print("In der Mitte ist es dunkel.")
+            # print("In der Mitte ist es dunkel.")
             self.steering_angle = 90
-        self.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, fahrparcours, self.sensordaten)
+        self.save_data(self.speed, self.direction, self.steering_angle, self.distance, fahrparcours, self.sensordaten)
 
         if self.sensordaten[0] > 10 and self.sensordaten[1] > 10 and self.sensordaten[2] > 10 and self.sensordaten[3] > 10 and self.sensordaten[4] > 10:
             self.drive(40,-1)
             self.steering_angle = 45
-            self.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, fahrparcours, self.sensordaten)
+            self.save_data(self.speed, self.direction, self.steering_angle, self.distance, fahrparcours, self.sensordaten)
             time.sleep(0.3)
             if self.sensordaten[0] > 10 and self.sensordaten[1] > 10 and self.sensordaten[2] > 10 and self.sensordaten[3] > 10 and self.sensordaten[4] > 10:
                 self.drive(40,1)
-                self.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, fahrparcours, self.sensordaten)
+                self.save_data(self.speed, self.direction, self.steering_angle, self.distance, fahrparcours, self.sensordaten)
                 time.sleep(0.5)
             self.drive(40,-1)
             self.steering_angle = 135
-            self.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, fahrparcours, self.sensordaten)
+            self.save_data(self.speed, self.direction, self.steering_angle, self.distance, fahrparcours, self.sensordaten)
             time.sleep(0.3)
             if self.sensordaten[0] > 10 and self.sensordaten[1] > 10 and self.sensordaten[2] > 10 and self.sensordaten[3] > 10 and self.sensordaten[4] > 10:
                 self.steering_angle
                 self.stop()
-                self.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, fahrparcours, self.sensordaten)
+                self.save_data(self.speed, self.direction, self.steering_angle, self.distance, fahrparcours, self.sensordaten)
                 return True
             else:    
                 self.drive(40,1)
-                self.save_data(my_car.speed, my_car.direction, my_car.steering_angle, my_car.distance, fahrparcours, self.sensordaten)
+                self.save_data(self.speed, self.direction, self.steering_angle, self.distance, fahrparcours, self.sensordaten)
             
 
 if __name__ == '__main__':
