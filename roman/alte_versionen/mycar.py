@@ -128,25 +128,14 @@ class SonicCar(BaseCar):
         self.stop()
         self.log_data(self.zeitstempel(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "car_stop")
 
-    # #Schleife ALT:
-    # def BAKUP_measure_distance(self):
-    #     while True:
-    #         abstand = self.get_distance()
-    #         time.sleep(0.2)
-    #         print(abstand)
-    #         if abstand < 0:
-    #             print(f"Sensor-Fehler #{abstand}")
-    #             self.log_data(datetime.now(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "supersonic_sensor_error")
-    #         elif abstand < 10: # Hinderniss erkannt:
-    #             self.sonic_sensor.stop()
-    #             self.stop()
-    #             self.log_data(datetime.now(), self.speed, self.direction, self.steering_angle, self.last_distance_measured, "low_distance_stop")
-    #             print("Auto gestoppt: Distance < 10.")
-    #             break
-    #     self.sonic_sensor.stop()
-    #     #self.stop()
-
     def log_data(self, zeit, speed, direction, steering_angle, distance, reason):
         with open('roman_fahrdaten.txt','a',encoding='utf-8') as file:
             writer = csv.writer(file, delimiter=',')
             writer.writerow([zeit, speed, direction, steering_angle, distance, reason])
+
+
+class SensorCar(SonicCar):
+    
+    def __init__(self) -> None:
+        super().__init__()
+        self.line_sensor = r_basisklassen.Infrared()

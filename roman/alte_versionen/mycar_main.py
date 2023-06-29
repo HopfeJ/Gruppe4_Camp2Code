@@ -77,7 +77,7 @@ def fahrparcours4(mycar2):
     print("speed aktuell", mycar2.speed)
     print("direction aktuell", mycar2.direction)
     mycar2.log_data(mycar2.zeitstempel(), mycar2.speed, mycar2.direction, mycar2.steering_angle, mycar2.last_distance_measured, "start_driving")
-    mycar2.measure_distance(10)
+    mycar2.measure_distance(20)
 
 def test(mycar):
     # test
@@ -128,5 +128,12 @@ def test(mycar):
     print(f"Direction: {mycar.direction}")
     print(f"Speed: {mycar.speed}") # speed über getter abfragen
 
+# Main:
+
 #fahrparcours2(mycar)
-fahrparcours4(mycar2)
+#fahrparcours4(mycar2)
+
+mycar3 = SensorCar()
+mycar3.drive(30,1)
+time.sleep(3)
+mycar3.stop()
