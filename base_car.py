@@ -55,7 +55,7 @@ class BaseCar():
             self.antriebsraeder.speed = self.__speed
             self.antriebsraeder.forward()
         elif fahrtrichtung == -1:
-            self.__direction == -1
+            self.__direction = -1
             self.__speed = geschwindigkeit
             self.antriebsraeder.speed = self.__speed
             self.antriebsraeder.backward()
@@ -63,9 +63,6 @@ class BaseCar():
             self.stop()
         else:
             self.__direction == 0
-            return
-            
-        
         
        
 

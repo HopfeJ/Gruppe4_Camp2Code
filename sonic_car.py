@@ -26,7 +26,7 @@ class SonicCar(BaseCar):
         while (datetime.now()-start).seconds<= zeit:
             abstand = self.ultraschall.distance()
             time.sleep(0.2)
-            print(abstand)
+            # print(abstand)
             if abstand < 15 and abstand > 0:
                 self.ultraschall.stop()
                 self.stop()
