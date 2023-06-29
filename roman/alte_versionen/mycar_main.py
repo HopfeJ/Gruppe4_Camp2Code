@@ -128,5 +128,12 @@ def test(mycar):
     print(f"Direction: {mycar.direction}")
     print(f"Speed: {mycar.speed}") # speed über getter abfragen
 
+# Main:
+
 #fahrparcours2(mycar)
-fahrparcours4(mycar2)
+#fahrparcours4(mycar2)
+
+mycar3 = SensorCar()
+mycar3.drive(30,1)
+time.sleep(3)
+mycar3.stop()
