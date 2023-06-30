@@ -12,7 +12,6 @@ fahren.
 
 Methoden:
     fahrparcours_1(BaseCar-Objekt)
-
 """
 
 def fahrparcours_1(my_car):

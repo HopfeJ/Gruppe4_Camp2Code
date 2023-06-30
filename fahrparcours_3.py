@@ -9,6 +9,8 @@ Während dieser Fahrt werden die Fahrdaten
 (Geschwindigkeit, Lenkwinkel, Fahrrichtung, Sensordaten) 
 aufgezeichnet.
 
+Dabei wird die Klasse SonicCar genutzt.
+
 Methoden:
     fahrparcours_3(BaseCar-Objekt)
 """
