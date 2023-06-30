@@ -9,6 +9,35 @@ import fahrparcours_5
 import fahrparcours_6
 import fahrparcours_7
 
+"""
+Dieses Programm ermöglicht die Auswahl und Ausführung verschiedener Fahrparcours für das SunFounder-Auto.
+
+Das Programm importiert die Module base_car, sonic_car, sensor_car sowie die verschiedenen Fahrparcours-Module
+(fahrparcours_1, fahrparcours_2, fahrparcours_3 usw.).
+
+Es werden drei Fahrzeugobjekte erstellt: 
+    moehre (von der Klasse BaseCar), 
+    moehre_mit_abstandsmesser (von der Klasse SonicCar) und 
+    luxusschlitten (von der Klasse SensorCar).
+
+Der Benutzer wird durch ein Menü aufgefordert, eine Option auszuwählen. 
+Je nach Auswahl wird der entsprechende Fahrparcours für das entsprechende Fahrzeug gestartet.
+
+Optionen:
+    1 - Fahrparcours 1 starten
+    2 - Fahrparcours 2 starten
+    3 - Fahrparcours 3 starten
+    4 - Fahrparcours 4 starten
+    5 - Fahrparcours 5 starten
+    6 - Fahrparcours 6 starten
+    7 - Fahrparcours 7 starten
+    x - Programm beenden
+
+Das Programm läuft in einer Endlosschleife, bis der Benutzer die Option "x" wählt, um das Programm zu beenden.
+Bei einer falschen Eingabe wird eine entsprechende Meldung ausgegeben.
+
+"""
+
 
 moehre = base_car.BaseCar()
 moehre_mit_abstandsmesser = sonic_car.SonicCar()

@@ -10,6 +10,8 @@ Dann fährt das Auto diesen Fahrplan in umgekehrter Weise ab und kehrt an den Au
 punkt zurück. Die Vorgehensweise wird für eine Fahrt im entgegengesetzten Uhrzei-
 gersinn wiederholt.
 
+Dabei wird die Klasse BaseCar genutzt.
+
 Methoden:
     fahrparcours_2(BaseCar-Objekt)
 """

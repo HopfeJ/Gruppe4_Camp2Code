@@ -10,9 +10,10 @@ für 1 Sekunde stoppen
 und wieder für 3 Sekunden rückwärts
 fahren.
 
+Dabei wird die Klasse BaseCar genutzt.
+
 Methoden:
     fahrparcours_1(BaseCar-Objekt)
-
 """
 
 def fahrparcours_1(my_car):
