@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import datetime
-
+import dash_bootstrap_components as dbc
 """
     Daten aus CSV Datei in DataFrame holen
 """
@@ -47,7 +47,7 @@ print(df)
 """
     Webseite erstellen
 """
-app = Dash()
+app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = html.Div(
     children=[
