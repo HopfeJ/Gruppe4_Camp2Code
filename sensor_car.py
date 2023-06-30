@@ -49,7 +49,7 @@ class SensorCar(SonicCar):
             writer = csv.writer(file, delimiter=',')
             writer.writerow(["Geschwindigkeit", "Fahrtrichtung", "Lenkwinkel", "Abstand", "Zeitstempel", "Fahrparcours", "Sensordaten"])
 
-    def save_data(self,speed,direction,steering_angle,distance, fahrparcours, sensordaten):
+    def save_data(self, speed: int, direction:int, steering_angle:int ,distance:int , fahrparcours:int , sensordaten: list):
         """
             Speichert die Fahrdaten des Fahrzeugs während der Fahrt.
             Mit jedem Methodenaufruf wird eine neue Zeile erzeugt.
@@ -73,7 +73,7 @@ class SensorCar(SonicCar):
             writer = csv.writer(file, delimiter=',')
             writer.writerow([speed,direction,steering_angle,distance,datetime.now().replace(microsecond=0), fahrparcours, sensordaten])
 
-    def drive_with_line_follower(self, fahrparcours):
+    def drive_with_line_follower(self, fahrparcours: int) -> bool:
         """
         Führt das Fahren mit dem Line-Follower-Sensor durch.
 
