@@ -1,0 +1,65 @@
+# Phase 1
+
+sudo apt-get update
+sudo apt-get upgrade
+
+pip3 install numpy
+pip3 install pandas
+pip3 install matplotlib
+
+pip3 install jupyter
+
+pip3 install plotly
+pip3 install dash
+pip3 install dash_bootstrap_components
+pip3 install dash-extensions==0.0.70
+
+
+## VSCode
+sudo apt install code
+
+## XRDP
+sudo apt-get install xrdp
+
+# Phase 2
+
+## Voraussetzungen
+
+sudo apt-get install build-essential cmake pkg-config
+
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+
+sudo apt-get install libxvidcore-dev libx264-dev
+
+sudo apt-get install libfontconfig1-dev libcairo2-dev
+
+sudo apt-get install libgdk-pixbuf2.0-dev libpango1.0-dev
+
+sudo apt-get install libgtk2.0-dev libgtk-3-dev
+
+sudo apt-get install libatlas-base-dev gfortran
+
+sudo apt-get install libhdf5-dev libhdf5-serial-dev libhdf5-103
+
+sudo apt-get install libqtgui4 libqtwebkit4 libqt4-test python3-pyqt5 libjpeg8-dev 
+
+sudo apt-get install libtiff5-dev 
+
+sudo apt-get install libjasper-dev libpng12-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+
+sudo apt-get install python3-dev
+
+## Tensorflow 2.4
+
+pip3 install https://github.com/lhelontra/tensorflow-on-arm/releases/download/v2.4.0/tensorflow-2.4.0-cp37-none-linux_armv7l.whl
+pip3 install --upgrade numpy
+
+## OpenCV
+
+wget https://github.com/Qengineering/Install-OpenCV-Raspberry-Pi-32-bits/raw/main/OpenCV-4-5-5.sh
+
+sudo chmod 755 ./OpenCV-4-5-5.sh
+
+./OpenCV-4-5-5.sh
+
+
