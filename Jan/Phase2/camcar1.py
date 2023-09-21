@@ -4,7 +4,7 @@ import numpy as np
 import cv2 as cv
 import matplotlib.pylab as plt
 import time
-import statistics as st
+from datetime import datetime
 
 
 
@@ -20,7 +20,7 @@ class CamCar(BaseCar):
                 break
         car.release()
         cv.destroyAllWindows()
-        car.stop()
+        
 
         
     def test1(self):
@@ -46,20 +46,21 @@ class CamCar(BaseCar):
                 y1 = int(b)
                 x2 = 1000
                 y2 = int(a*1000+b)
-                    
-                img2=cv.line(img2,(x1,y1),(x2,y2),(200,100,100),1) # adds a line to an image
+            
+                img2=cv.line(img2,(x1,y1),(x2,y2),(200,100,100),1) 
 
                 if y1 > 0:
                     linke_seite = np.append(linke_seite,[y1])
                 if y1 < 0:
                     rechte_seite = np.append(rechte_seite,[y1+1000] )
-
             
-
-            #print(linke_seite.mean())
-            print(round(linke_seite.mean(),0),round(rechte_seite.mean(),0))  
-            return img2
-        
+            #print(round(linke_seite.mean(),0),round(rechte_seite.mean(),0)) 
+                    
+            time.sleep(0.1)  
+            links = round(linke_seite.mean(),0)
+            rechts = round(rechte_seite.mean(),0)
+            return   (links , rechts)
+            
         
         
         cam = Camera()
@@ -67,29 +68,20 @@ class CamCar(BaseCar):
         upper = np.array([125, 255, 255])
         rho = 1
         angle = np.pi / 180 
-        min_threshold = 130  
+        min_threshold = 150  
 
-        while True:
-            img = cam.get_frame() 
-            img_cut = img[80:380,50:600].copy()
-            img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) 
-
-            image_mask = cv.inRange(img_cut_HSV, lower, upper)
-            parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
-            parameter_mask[:2]
-
-            imageresult =  draw_lines(parameter_mask, image_mask) 
-            
-                
-            cv.imshow("Display window (press q to quit)", imageresult)
-            # Ende bei Drücken der Taste q
-            if cv.waitKey(1) == ord('q'):
-                break
-              
-            time.sleep(0.1)
         
+        img = cam.get_frame() 
+        img_cut = img[80:380,50:600].copy()
+        img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) 
+        image_mask = cv.inRange(img_cut_HSV, lower, upper)
+        parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
+        parameter_mask[:2]
+        imageresult =  draw_lines(parameter_mask, image_mask) 
         cam.release()
-        cv.destroyAllWindows()
+        print(imageresult)
+        return imageresult
+       
        
 
 
@@ -101,9 +93,20 @@ class CamCar(BaseCar):
 
 if __name__ == "__main__":
     test = CamCar()
-    test.fahren_wie_auf_schienen()
-    #test.steering_angle =90
-    #time.sleep(3)
-    #test.steering_angle = 45
-    #time.sleep(3)
-    #test.steering_angle =90
+    start = datetime.now()
+    while (datetime.now()-start).seconds<= 10:
+        test.drive(30,1)
+       
+        if test.fahren_wie_auf_schienen() > (310,0):
+            test.steering_angle = 110
+            print('lenken rechts')
+            time.sleep(1)
+            test.steering_angle = 90
+        if test.fahren_wie_auf_schienen() < (240,0) :
+            test.steering_angle = 70
+            print('lenken links')
+            time.sleep(1)
+            test.steering_angle = 90
+    
+    test.stop()
+   
