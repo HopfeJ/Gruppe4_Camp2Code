@@ -4,38 +4,28 @@ import numpy as np
 import cv2 as cv
 import matplotlib.pylab as plt
 import time
-
-
-
+from datetime import datetime
 
 
 class CamCar(BaseCar):
 
-    def test(self):
-        car = Camera()
-        while True:
-            img = car.get_frame()
-            cv.imshow('image', img)
-            if cv.waitKey(5000) & 0xFF == ord('q'):
-                break
-        car.release()
-        cv.destroyAllWindows()
-        car.stop()
+   
 
-        
-    def test1(self):
-        car = Camera()
-        img = car.get_frame()
-        cv.imshow('image', img)
-        cv.waitKey(0) 
+    def draw_lines_links(self):
+        try:    
+            cam = Camera()
+            lower = np.array([95, 0, 0])
+            upper = np.array([125, 255, 255])
+            rho = 1
+            angle = np.pi / 180 
+            min_threshold = 190  
 
-
-
-    def fahren_wie_auf_schienen(self):
-
-        def draw_lines_links(parameter_mask,img):
-            img2 = img.copy()
-            img2 = cv.cvtColor(img2, cv.COLOR_GRAY2RGB)
+            img = cam.get_frame() 
+            img_cut = img[80:380,50:640].copy()
+            img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) 
+            image_mask = cv.inRange(img_cut_HSV, lower, upper)
+            parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
+            parameter_mask[:2]
             linke_seite = np.array([])
             for line in parameter_mask:
                 rho,theta = line[0]
@@ -45,18 +35,32 @@ class CamCar(BaseCar):
                 y1 = int(b)
                 x2 = 1000
                 y2 = int(a*1000+b)
-
                 if y1 > 0:
                     linke_seite = np.append(linke_seite,[y1])
-                 
-            time.sleep(0.2)  
+
+             
             links = round(linke_seite.mean(),0)
-           
+            #print('Links',links)
+            cam.release()
             return links 
-            
-        def draw_lines_rechts(parameter_mask,img):
-            img2 = img.copy()
-            img2 = cv.cvtColor(img2, cv.COLOR_GRAY2RGB)
+        except:
+            pass
+
+    def draw_lines_rechts(self):
+        try:    
+            cam = Camera()
+            lower = np.array([95, 0, 0])
+            upper = np.array([125, 255, 255])
+            rho = 1
+            angle = np.pi / 180 
+            min_threshold = 190  
+
+            img = cam.get_frame() 
+            img_cut = img[80:380,50:640].copy()
+            img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) 
+            image_mask = cv.inRange(img_cut_HSV, lower, upper)
+            parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
+            parameter_mask[:2]
             rechte_seite = np.array([])
             for line in parameter_mask:
                 rho,theta = line[0]
@@ -66,54 +70,55 @@ class CamCar(BaseCar):
                 y1 = int(b)
                 x2 = 1000
                 y2 = int(a*1000+b)
-
                 if y1 < 0:
                     rechte_seite = np.append(rechte_seite,[y1+1000] )
-                    
-            time.sleep(0.2)  
+
+              
             rechts = round(rechte_seite.mean(),0)
+            print('rechts',rechts)
+            cam.release()
             return   rechts       
-        
-        cam = Camera()
-        lower = np.array([95, 0, 0])
-        upper = np.array([125, 255, 255])
-        rho = 1
-        angle = np.pi / 180 
-        min_threshold = 250  
-
-        
-        img = cam.get_frame() 
-        img_cut = img[80:380,50:600].copy()
-        img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) 
-        image_mask = cv.inRange(img_cut_HSV, lower, upper)
-        parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
-        parameter_mask[:2]
-        links =  draw_lines_links(parameter_mask, image_mask) 
-        rechts = draw_lines_rechts(parameter_mask,image_mask)
-        cam.release()
-        print(links,rechts)
-        return links ,rechts
-       
-       
-
-
-
-
-
-
-
-
+        except:
+            pass
+   
+   
+    
+   
+  
+    
+    
 if __name__ == "__main__":
     test = CamCar()
-    
-    while True:
-        #test.drive(30,1)
-       
-        if test.fahren_wie_auf_schienen() < (420,0):
-            test.steering_angle = 110
-       # if test.fahren_wie_auf_schienen() < 240 :
-       #     test.steering_angle = 70
-       # if test.fahren_wie_auf_schienen() < 420 :
-       #     test.steering_angle = 90
-
+    start = datetime.now()
+    while (datetime.now()-start).seconds<= 90:
+        test.drive(30,1)
+        try:
+            if test.draw_lines_rechts() > 860 :
+                test.steering_angle = 58
+                test.drive(25,1)
+                print('voller einschlag')
+            if test.draw_lines_rechts() > 660 :
+                test.steering_angle = 70
+                print('voller einschlag')
+            if test.draw_lines_rechts() < 540 :
+                test.steering_angle = 85
+            #    print('leichter einschlag')
+            #if test.draw_lines_rechts() < 200 :
+            #    test.steering_angle = 80
+            #    print('einschlag recht')   
+            #if test.draw_lines_rechts() > 610 :
+            #    test.drive(35,1)
+            #    test.steering_angle = 80
+           
+            if test.draw_lines_rechts() < 660 :
+            #    #test.drive(20,1)
+                test.steering_angle = 90
+                print('gerade')
+            #if test.draw_lines_links() > 530:
+            #    test.steering_angle = 110 
+            if test.draw_lines_links() > 230:
+                test.steering_angle = 95  
+        except:
+            pass
+    test.stop()   
    

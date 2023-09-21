@@ -68,11 +68,11 @@ class CamCar(BaseCar):
         upper = np.array([125, 255, 255])
         rho = 1
         angle = np.pi / 180 
-        min_threshold = 150  
+        min_threshold = 190  
 
         
         img = cam.get_frame() 
-        img_cut = img[80:380,50:600].copy()
+        img_cut = img[80:380,50:640].copy()
         img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) 
         image_mask = cv.inRange(img_cut_HSV, lower, upper)
         parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
@@ -94,17 +94,17 @@ class CamCar(BaseCar):
 if __name__ == "__main__":
     test = CamCar()
     start = datetime.now()
-    while (datetime.now()-start).seconds<= 10:
-        test.drive(30,1)
+    while (datetime.now()-start).seconds<= 20:
+        #test.drive(30,1)
        
-        if test.fahren_wie_auf_schienen() > (310,0):
-            test.steering_angle = 110
-            print('lenken rechts')
+        if test.fahren_wie_auf_schienen() > (1000,800):
+            test.steering_angle = 70
+            print('lenken links')
             time.sleep(1)
             test.steering_angle = 90
         if test.fahren_wie_auf_schienen() < (240,0) :
-            test.steering_angle = 70
-            print('lenken links')
+            test.steering_angle = 110
+            print('lenken rechts')
             time.sleep(1)
             test.steering_angle = 90
     
