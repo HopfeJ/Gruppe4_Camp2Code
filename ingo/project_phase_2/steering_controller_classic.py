@@ -1,6 +1,7 @@
 import numpy as np
 import cv2 as cv
 
+
 class SteeringController():
     
     def __init__(self, lower, upper) -> None:
@@ -24,9 +25,14 @@ class SteeringController():
         lines_left_lane_boundary_y1 = np.array([])
         lines_left_lane_boundary_y2 = np.array([])
         lines_right_lane_boundary_y2 = np.array([])
-
-        for line in parameter_mask:
         
+        if parameter_mask is None:
+            lines_left_lane_boundary_y1_mean = 0
+            lines_right_lane_boundary_y1_mean = 0
+            return (img, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
+        
+        for line in parameter_mask:
+            
             rho,theta = line[0]
             try:
                 a = -np.cos(theta)/np.sin(theta) # Anstieg der Gerade
@@ -55,6 +61,7 @@ class SteeringController():
                 fontScale = 0.8, # Font size
                 color = (255,247,0), # Color in rgb
                 thickness = 2)
+            
         if len(lines_left_lane_boundary_y1) > 0:
             img=cv.line(img,(x1,int(lines_left_lane_boundary_y1.mean())),(x2,int(lines_left_lane_boundary_y2.mean())),(100,200,100),3) # adds a line to an image
             lines_left_lane_boundary_y1_mean = lines_left_lane_boundary_y1.mean()
@@ -70,9 +77,9 @@ class SteeringController():
         return (img, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
     
     def steering_direction(self, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean):
-        if lines_left_lane_boundary_y1_mean > 200:
+        if lines_left_lane_boundary_y1_mean > 150: # 200
             return 135
-        elif lines_right_lane_boundary_y1_mean > -400 and lines_right_lane_boundary_y1_mean != 0:
+        elif lines_right_lane_boundary_y1_mean > -350 and lines_right_lane_boundary_y1_mean != 0: #-400
             return 45
         else:
             return 90
