@@ -31,7 +31,6 @@ class CamCar(BaseCar):
     def show_picture(self, img):
         cv.imshow('image', img)
         if cv.waitKey(1) == ord('q'):
-            self.stop()
             self.stop_it = True
 
     def prepare_picture(self, img) -> np.array:
@@ -39,22 +38,20 @@ class CamCar(BaseCar):
         return img_cut
     
     def run(self):
-        try:
-            while True:
-                if self.stop_it:
-                    break
-                img = self.make_picture()
-                prepared_img = self.prepare_picture(img)
-                transformed_img, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean = self.steering_controller.classic_hough_transformation(prepared_img)
-                self.show_picture(transformed_img)
-                steering_order = self.steering_controller.steering_direction(lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
-                self.drive(30, 1)
-                self.steering_angle = steering_order
-                sleep(0.5)
-                self.steering_angle = 90
-                print(steering_order, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
-        except KeyboardInterrupt:
-            self.stop()
+        while True:
+            if self.stop_it:
+                break
+            img = self.make_picture()
+            prepared_img = self.prepare_picture(img)
+            transformed_img, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean = self.steering_controller.classic_hough_transformation(prepared_img)
+            self.show_picture(transformed_img)
+            steering_order = self.steering_controller.steering_direction(lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
+            self.drive(30, 1)
+            self.steering_angle = steering_order
+            sleep(0.5)
+            self.steering_angle = 90
+            print(steering_order, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
+        self.stop()
 
 if __name__ == "__main__":
     my_car = CamCar(SteeringController(np.array([90, 0, 0]), np.array([150, 255, 255])))
