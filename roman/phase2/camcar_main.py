@@ -17,12 +17,12 @@ while True:
     print(line_segments)
     
     if line_segments is not None:
-        lane_lines = car.average_slope_intercept(img, line_segments)
-        print('average_slope_intercept:')
-        print(lane_lines)
-        fahrlinie = car.calc_fahrlinie(img, lane_lines)
-        imageresult = car.draw_line_segments(lane_lines, fahrlinie, img)
-        lenkwinkel = car.compute_steering_angle(img, lane_lines)
+        linien = car.teile_linien(img, line_segments)
+        print('Avg Steigung und Schnittpunkt:')
+        print(linien)
+        leitlinie = car.calc_leitlinie(img, linien)
+        imageresult = car.draw_line_segments(linien, leitlinie, img)
+        lenkwinkel = car.calc_steering_angle(img, linien)
         car.steering_angle = lenkwinkel
         cv.imshow("Display window (press q to quit)", imageresult)
         # Ende bei Drücken der Taste q
