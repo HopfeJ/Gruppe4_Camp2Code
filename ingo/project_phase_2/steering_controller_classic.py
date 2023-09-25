@@ -1,6 +1,7 @@
 import numpy as np
 import cv2 as cv
 
+
 class SteeringController():
     
     def __init__(self, lower, upper) -> None:
@@ -20,8 +21,18 @@ class SteeringController():
     def draw_lines(self,parameter_mask, image_mask): # Diese Funktion zeichnet die Geraden in das Bild ein
         img = image_mask.copy()
         img = cv.cvtColor(img, cv.COLOR_GRAY2RGB)
-        for line in parameter_mask:
+        lines_right_lane_boundary_y1 = np.array([])
+        lines_left_lane_boundary_y1 = np.array([])
+        lines_left_lane_boundary_y2 = np.array([])
+        lines_right_lane_boundary_y2 = np.array([])
         
+        if parameter_mask is None:
+            lines_left_lane_boundary_y1_mean = 0
+            lines_right_lane_boundary_y1_mean = 0
+            return (img, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
+        
+        for line in parameter_mask:
+            
             rho,theta = line[0]
             try:
                 a = -np.cos(theta)/np.sin(theta) # Anstieg der Gerade
@@ -34,6 +45,13 @@ class SteeringController():
                 #print(f'Fehler{a,b}')
                 pass
 
+            if y1 > 0: # linke Fahrbahnbegrenzung
+                lines_left_lane_boundary_y1 = np.append(lines_left_lane_boundary_y1, [y1])
+                lines_left_lane_boundary_y2 = np.append(lines_left_lane_boundary_y2, [y2])
+            if y1 < 0: # rechte Fahrbahnbegrenzung
+                lines_right_lane_boundary_y1 = np.append(lines_right_lane_boundary_y1, [y1])
+                lines_right_lane_boundary_y2 = np.append(lines_right_lane_boundary_y2, [y2])
+
             # print(x1,x2,y1,y2)
             img=cv.line(img,(x1,y1),(x2,y2),(200,100,100),1) # adds a line to an image
             cv.putText(img, 
@@ -43,4 +61,25 @@ class SteeringController():
                 fontScale = 0.8, # Font size
                 color = (255,247,0), # Color in rgb
                 thickness = 2)
-        return img
+            
+        if len(lines_left_lane_boundary_y1) > 0:
+            img=cv.line(img,(x1,int(lines_left_lane_boundary_y1.mean())),(x2,int(lines_left_lane_boundary_y2.mean())),(100,200,100),3) # adds a line to an image
+            lines_left_lane_boundary_y1_mean = lines_left_lane_boundary_y1.mean()
+        else:
+            lines_left_lane_boundary_y1_mean = 0    
+
+        if len(lines_right_lane_boundary_y1) > 0:
+            img=cv.line(img,(x1,int(lines_right_lane_boundary_y1.mean())),(x2,int(lines_right_lane_boundary_y2.mean())),(100,200,100),3) # adds a line to an image
+            lines_right_lane_boundary_y1_mean = lines_right_lane_boundary_y1.mean()
+        else:
+            lines_right_lane_boundary_y1_mean = 0
+
+        return (img, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
+    
+    def steering_direction(self, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean):
+        if lines_left_lane_boundary_y1_mean > 150: # 200
+            return 135
+        elif lines_right_lane_boundary_y1_mean > -350 and lines_right_lane_boundary_y1_mean != 0: #-400
+            return 45
+        else:
+            return 90
