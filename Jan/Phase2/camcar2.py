@@ -9,20 +9,31 @@ from datetime import datetime
 
 class CamCar(BaseCar):
 
-   
+    def __init__(self):
+        super().__init__()
+        self.cam = Camera() 
+        
+
+    def bild_fertig(self):
+        img = self.cam.get_frame() 
+        img_cut = img[80:380,50:640].copy()
+        img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV)
+        return img_cut_HSV  
+    
+    def stop_Cam(self):
+        self.cam.release()
+        
 
     def draw_lines_links(self):
         try:    
-            cam = Camera()
             lower = np.array([95, 0, 0])
             upper = np.array([125, 255, 255])
             rho = 1
             angle = np.pi / 180 
             min_threshold = 190  
 
-            img = cam.get_frame() 
-            img_cut = img[80:380,50:640].copy()
-            img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) 
+           
+            img_cut_HSV = self.bild_fertig()
             image_mask = cv.inRange(img_cut_HSV, lower, upper)
             parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
             parameter_mask[:2]
@@ -41,23 +52,21 @@ class CamCar(BaseCar):
              
             links = round(linke_seite.mean(),0)
             #print('Links',links)
-            cam.release()
+           
             return links 
         except:
             pass
 
     def draw_lines_rechts(self):
+            
         try:    
-            cam = Camera()
             lower = np.array([95, 0, 0])
             upper = np.array([125, 255, 255])
             rho = 1
             angle = np.pi / 180 
             min_threshold = 190  
 
-            img = cam.get_frame() 
-            img_cut = img[80:380,50:640].copy()
-            img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) 
+            img_cut_HSV = self.bild_fertig()
             image_mask = cv.inRange(img_cut_HSV, lower, upper)
             parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
             parameter_mask[:2]
@@ -74,51 +83,58 @@ class CamCar(BaseCar):
                     rechte_seite = np.append(rechte_seite,[y1+1000] )
 
               
-            rechts = round(rechte_seite.mean(),0)
-            print('rechts',rechts)
-            cam.release()
-            return   rechts       
+            wert = round(rechte_seite.mean(),0)
+            print('rechts',wert)
+            if wert > 860:
+                return int(58)
+
+            elif wert > 660 :
+                return int(70)
+            
+            elif wert < 500 :
+                return int(100)
+
+            elif wert < 660 :
+                return int(90)
+            
+            
+           # return   rechts       
         except:
             pass
+
+    def lenkwinkel(self):
+        t = CamCar()
+        wert = t.draw_lines_rechts()
+        #print(wert)
+        
+        if wert > 860:
+            return int(58)
+
+        elif wert > 660 :
+            return int(70)
+        
+        elif wert < 500 :
+           return int(100)
+        
+        elif wert < 660 :
+            return int(90)
+        
+        
    
-   
-    
-   
-  
     
     
 if __name__ == "__main__":
     test = CamCar()
     start = datetime.now()
-    while (datetime.now()-start).seconds<= 90:
-        test.drive(30,1)
-        try:
-            if test.draw_lines_rechts() > 860 :
-                test.steering_angle = 58
-                test.drive(25,1)
-                print('voller einschlag')
-            if test.draw_lines_rechts() > 660 :
-                test.steering_angle = 70
-                print('voller einschlag')
-            if test.draw_lines_rechts() < 540 :
-                test.steering_angle = 85
-            #    print('leichter einschlag')
-            #if test.draw_lines_rechts() < 200 :
-            #    test.steering_angle = 80
-            #    print('einschlag recht')   
-            #if test.draw_lines_rechts() > 610 :
-            #    test.drive(35,1)
-            #    test.steering_angle = 80
-           
-            if test.draw_lines_rechts() < 660 :
-            #    #test.drive(20,1)
-                test.steering_angle = 90
-                print('gerade')
-            #if test.draw_lines_links() > 530:
-            #    test.steering_angle = 110 
-            if test.draw_lines_links() > 230:
-                test.steering_angle = 95  
-        except:
-            pass
-    test.stop()   
+    
+    while (datetime.now()-start).seconds<= 5:
+        test.drive(35,1)
+        test.steering_angle = test.draw_lines_rechts()
+        print(test.draw_lines_rechts())
+        #test.steering_angle = test.lenkwinkel()
+        #test.drive(40,1)
+        time.sleep(0.1)
+       
+    test.stop() 
+    test.stop_Cam()  
    
