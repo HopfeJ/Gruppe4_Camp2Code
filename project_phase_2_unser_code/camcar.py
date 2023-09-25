@@ -7,12 +7,16 @@ from time import sleep
 def draw_lines(parameter_mask,img):
     img2 = img.copy()
     img2 = cv.cvtColor(img2, cv.COLOR_GRAY2RGB)
+
+    if parameter_mask is None:
+        return img2
+    
     for line in parameter_mask:
         rho,theta = line[0]
-        a = -np.cos(theta)/np.sin(theta) # Anstieg der Gerade
-        b = rho/np.sin(theta)            # Absolutglied/Intercept/Schnittpunkt mit der y-Achse
-        x1 = 0
         try:
+            a = -np.cos(theta)/np.sin(theta) # Anstieg der Gerade
+            b = rho/np.sin(theta)            # Absolutglied/Intercept/Schnittpunkt mit der y-Achse
+            x1 = 0
             y1 = int(b)
             x2 = 1000
             y2 = int(a*1000+b)
@@ -119,7 +123,7 @@ class CamCar(BaseCar):
 
     def run(self):
         while True:
-            if  self.stop_it: 
+            if not self.stop_it: 
                 # Bild machen
                 img = self.make_picture()
                 # Bild schneiden und colorieren
