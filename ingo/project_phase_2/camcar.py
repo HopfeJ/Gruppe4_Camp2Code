@@ -34,7 +34,7 @@ class CamCar(BaseCar):
             self.stop_it = True
 
     def prepare_picture(self, img) -> np.array:
-        img_cut = img[170:380,50:600].copy() # Erste Koordinaten y-Achse von oben nach unten, Zweite Koordinaten X-Achse von links nach rechts
+        img_cut = img[170:380,50:590].copy() # Erste Koordinaten y-Achse von oben nach unten, Zweite Koordinaten X-Achse von links nach rechts
         return img_cut
     
     def run(self):
