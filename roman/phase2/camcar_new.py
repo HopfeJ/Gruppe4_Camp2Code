@@ -15,7 +15,8 @@ class CamCar(BaseCar):
     def __init__(self, config: str = "config.json"):
         super().__init__(config)
         self.cam = Camera()
-        
+    
+
     def get_prep_image(self):
         # Werte f+r Blau-Anteil im HSV-Farbraum (360 Grad / 2)
         lower = np.array([90, 0, 0])
@@ -100,11 +101,15 @@ class CamCar(BaseCar):
         height, width = img.shape
 
         print(lane_lines)
-        links = lane_lines[0][0]
-        rechts = lane_lines[1][0]
-        left_x2= links[2]
-        right_x2 = rechts[2]
-        y2 = links[3]
+        if lane_lines[0][0]:
+            links = lane_lines[0][0]
+            left_x2= links[2]
+            y2 = links[3]
+
+        if lane_lines[1][0]:
+            rechts = lane_lines[1][0]
+            right_x2 = rechts[2]
+            y2 = rechts[3]
 
         camera_mid_offset_percent = 0.00 # 0.0 means car pointing to center, -0.03: car is centered to left, +0.03 means car pointing to right
         mid = int(width / 2 * (1 + camera_mid_offset_percent))
