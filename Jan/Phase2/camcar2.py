@@ -24,40 +24,8 @@ class CamCar(BaseCar):
         self.cam.release()
         
 
-    def draw_lines_links(self):
-        try:    
-            lower = np.array([95, 0, 0])
-            upper = np.array([125, 255, 255])
-            rho = 1
-            angle = np.pi / 180 
-            min_threshold = 190  
 
-           
-            img_cut_HSV = self.bild_fertig()
-            image_mask = cv.inRange(img_cut_HSV, lower, upper)
-            parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
-            parameter_mask[:2]
-            linke_seite = np.array([])
-            for line in parameter_mask:
-                rho,theta = line[0]
-                a = -np.cos(theta)/np.sin(theta) # Anstieg der Gerade
-                b = rho/np.sin(theta)            # Absolutglied/Intercept/Schnittpunkt mit der y-Achse
-                x1 = 0
-                y1 = int(b)
-                x2 = 1000
-                y2 = int(a*1000+b)
-                if y1 > 0:
-                    linke_seite = np.append(linke_seite,[y1])
-
-             
-            links = round(linke_seite.mean(),0)
-            #print('Links',links)
-           
-            return links 
-        except:
-            pass
-
-    def draw_lines_rechts(self):
+    def draw_lines(self):
             
         try:    
             lower = np.array([95, 0, 0])
@@ -70,6 +38,7 @@ class CamCar(BaseCar):
             image_mask = cv.inRange(img_cut_HSV, lower, upper)
             parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
             parameter_mask[:2]
+            linke_seite = np.array([])
             rechte_seite = np.array([])
             for line in parameter_mask:
                 rho,theta = line[0]
@@ -81,58 +50,50 @@ class CamCar(BaseCar):
                 y2 = int(a*1000+b)
                 if y1 < 0:
                     rechte_seite = np.append(rechte_seite,[y1+1000] )
+                if y1 > 0:
+                    linke_seite = np.append(linke_seite,[y1])
 
-              
-            wert = round(rechte_seite.mean(),0)
-            print('rechts',wert)
-            if wert > 860:
-                return int(58)
+            links = round(linke_seite.mean(),0) 
+            rechts = round(rechte_seite.mean(),0)
+            print('rechts',links,rechts)
+            if rechts > 860:
+                return int(60)
 
-            elif wert > 660 :
-                return int(70)
+            elif rechts > 680 :
+                return int(75)
             
-            elif wert < 500 :
+            elif rechts > 650 :
+               return int(85)
+            
+            elif rechts < 400 :
+                return int(110)
+            
+            elif rechts < 500 :
                 return int(100)
+            
+            elif rechts < 550 :
+                return int(95)
 
-            elif wert < 660 :
+            elif rechts < 650 :
                 return int(90)
-            
-            
-           # return   rechts       
+     
         except:
             pass
 
-    def lenkwinkel(self):
-        t = CamCar()
-        wert = t.draw_lines_rechts()
-        #print(wert)
-        
-        if wert > 860:
-            return int(58)
-
-        elif wert > 660 :
-            return int(70)
-        
-        elif wert < 500 :
-           return int(100)
-        
-        elif wert < 660 :
-            return int(90)
-        
-        
-   
-    
-    
+  
 if __name__ == "__main__":
     test = CamCar()
     start = datetime.now()
     
-    while (datetime.now()-start).seconds<= 5:
+    while (datetime.now()-start).seconds<= 35:
         test.drive(35,1)
-        test.steering_angle = test.draw_lines_rechts()
-        print(test.draw_lines_rechts())
-        #test.steering_angle = test.lenkwinkel()
-        #test.drive(40,1)
+        
+        try:
+            test.steering_angle = test.draw_lines()
+            print(test.draw_lines())
+        except:
+            continue
+        
         time.sleep(0.1)
        
     test.stop() 
