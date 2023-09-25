@@ -42,8 +42,7 @@ class SteeringController():
                 x2 = 1000
                 y2 = int(a*1000+b)
             except:
-                #print(f'Fehler{a,b}')
-                pass
+                continue
 
             if y1 > 0: # linke Fahrbahnbegrenzung
                 lines_left_lane_boundary_y1 = np.append(lines_left_lane_boundary_y1, [y1])

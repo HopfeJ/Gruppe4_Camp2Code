@@ -11,11 +11,13 @@ class CamCar(BaseCar):
         super().__init__()
         self.steering_controller = steering_controller
         self.stop_it = False
+        self.cam = Camera()
+
+    def release_cam(self):
+        self.cam.release()
 
     def make_picture(self) -> np.array:
-        cam = Camera()
-        img = cam.get_frame()
-        cam.release()
+        img = self.cam.get_frame()
         return img
     
     def save_picture(self, img: np.array):
@@ -52,10 +54,11 @@ class CamCar(BaseCar):
             self.steering_angle = 90
             print(steering_order, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
         self.stop()
-
+        
 if __name__ == "__main__":
     my_car = CamCar(SteeringController(np.array([90, 0, 0]), np.array([150, 255, 255])))
     my_car.run()
+    my_car.release_cam()
 
     
    

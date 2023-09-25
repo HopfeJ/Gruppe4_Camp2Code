@@ -2,6 +2,7 @@ from basecar import BaseCar
 from basisklassen_cam import Camera
 import cv2 as cv
 import numpy as np
+from time import sleep
 
 def draw_lines(parameter_mask,img):
     img2 = img.copy()
@@ -11,9 +12,12 @@ def draw_lines(parameter_mask,img):
         a = -np.cos(theta)/np.sin(theta) # Anstieg der Gerade
         b = rho/np.sin(theta)            # Absolutglied/Intercept/Schnittpunkt mit der y-Achse
         x1 = 0
-        y1 = int(b)
-        x2 = 1000
-        y2 = int(a*1000+b)
+        try:
+            y1 = int(b)
+            x2 = 1000
+            y2 = int(a*1000+b)
+        except:
+            continue
         #print(x1,x2,y1,y2)
         img2=cv.line(img2,(x1,y1),(x2,y2),(200,100,100),1) # adds a line to an image
         cv.putText(img2, 
@@ -30,6 +34,8 @@ class CamCar(BaseCar):
     def __init__(self):
         super().__init__()
         self.cam = Camera()
+        self.stop_it = False
+        self.image_hough = None
 
     def make_picture(self):
         img = self.cam.get_frame()
@@ -51,9 +57,8 @@ class CamCar(BaseCar):
         min_threshold = 220  # minimal of votes, Je geringer Min_threshold, dest mehr Geraden werden erkannt.
         found_lines = cv.HoughLines(image_mask, rho, angle, min_threshold)
         lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean = self.calculate_lines_in_lane_boundary(found_lines)
-        image_hough = draw_lines(found_lines, image_mask)
-        self.show_picture(image_hough)
-
+        self.image_hough = draw_lines(found_lines, image_mask)
+        
         if lines_left_lane_boundary_y1_mean > 150: # 200
             return 135
         elif lines_right_lane_boundary_y1_mean > -350 and lines_right_lane_boundary_y1_mean != 0: #-400
@@ -83,7 +88,7 @@ class CamCar(BaseCar):
                 x2 = 1000
                 y2 = int(a*1000+b)
             except:
-                pass
+                continue
 
             if y1 > 0: # linke Fahrbahnbegrenzung
                 lines_left_lane_boundary_y1 = np.append(lines_left_lane_boundary_y1, [y1])
@@ -107,19 +112,29 @@ class CamCar(BaseCar):
     def show_picture(self, img):
         window = "Picture Viewer (press q to quit)"
         cv.imshow(window, img)
-        key = cv.waitKey(0)
+        key = cv.waitKey(1)
         if key == ord("q"):
+            self.stop_it = True
             cv.destroyWindow(window) 
 
     def run(self):
-        # Bild machen
-        img = self.make_picture()
-        # Bild schneiden und colorieren
-        prepared_image = self.prepare_picture(img)
-        # Bild übergeben und Steuerwinkel zurückgeben
-        steering_angle = self.calculate_angle_from_picture(prepared_image)
-        # Winkel setzen und Auto fahren lassen
-
+        while True:
+            if self.stop_it: 
+                # Bild machen
+                img = self.make_picture()
+                # Bild schneiden und colorieren
+                prepared_image = self.prepare_picture(img)
+                # Bild übergeben und Steuerwinkel zurückgeben
+                steering_angle = self.calculate_angle_from_picture(prepared_image)
+                # Bild anzeigen
+                self.show_picture(self.image_hough)
+                # Winkel setzen und Auto fahren lassen
+                self.drive(30, 1)
+                self.steering_angle = steering_angle
+                print(steering_angle)
+                sleep(0.5)
+                self.steering_angle = 90
+        
 
 if __name__ == "__main__":
     my_car = CamCar()
