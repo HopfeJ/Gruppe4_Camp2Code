@@ -119,7 +119,7 @@ class CamCar(BaseCar):
 
     def run(self):
         while True:
-            if self.stop_it: 
+            if  self.stop_it: 
                 # Bild machen
                 img = self.make_picture()
                 # Bild schneiden und colorieren
