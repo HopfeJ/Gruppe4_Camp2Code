@@ -72,11 +72,11 @@ class CamCar(BaseCar):
         
         if lines_left_lane_boundary_y1_mean > 490: # 200
             print(round(lines_left_lane_boundary_y1_mean,0))
-            return 125
+            return 135
 
-        elif lines_left_lane_boundary_y1_mean > 390: # 200
+        elif lines_left_lane_boundary_y1_mean > 350: # 200
             print(round(lines_left_lane_boundary_y1_mean,0))
-            return 115
+            return 120
         
         elif lines_left_lane_boundary_y1_mean > 310 :
             print(round(lines_left_lane_boundary_y1_mean,0))
@@ -162,13 +162,13 @@ class CamCar(BaseCar):
             # Bild anzeigen
             self.show_picture(self.image_hough)
             # Winkel setzen und Auto fahren lassen
-            #self.drive(40, 1)
+            self.drive(35, 1)
             self.steering_angle = steering_angle
             print(steering_angle)
             if counter > 10:
-                #self.save_with_date(img,steering_angle)
+                self.save_with_date(img,steering_angle)
                 counter =0
-            sleep(0.2)
+            #sleep(0.2)
             counter +=1
         self.stop()
 
