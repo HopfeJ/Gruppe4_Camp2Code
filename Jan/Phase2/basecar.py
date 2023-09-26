@@ -59,7 +59,7 @@ class BaseCar():
         """Exception for errors related to a car"""
         pass
     
-    def __init__(self, config : str ="config.json"):
+    def __init__(self, config : str ="config_cam.json"):
         """Constructor method. It will read the config file and set the attributes.
 
         Args:
