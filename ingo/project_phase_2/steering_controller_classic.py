@@ -13,7 +13,7 @@ class SteeringController():
         image_mask = cv.inRange(img_cut_HSV, self.lower, self.upper)
         rho = 1  # distance precision in pixel, i.e. 1 pixel
         angle = np.pi / 180  # angular precision in radian, i.e. 1 degree
-        min_threshold = 210  # minimal of votes, Je geringer Min_threshold, dest mehr Geraden werden erkannt. 
+        min_threshold = 100  # minimal of votes, Je geringer Min_threshold, dest mehr Geraden werden erkannt (210). 
         parameter_mask = cv.HoughLines(image_mask, rho, angle, min_threshold)
         imageresult =  self.draw_lines(parameter_mask, image_mask)
         return imageresult
@@ -76,9 +76,9 @@ class SteeringController():
         return (img, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean)
     
     def steering_direction(self, lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean):
-        if lines_left_lane_boundary_y1_mean > 150: # 200
+        if lines_left_lane_boundary_y1_mean > 200: # 200
             return 135
-        elif lines_right_lane_boundary_y1_mean > -350 and lines_right_lane_boundary_y1_mean != 0: #-400
+        elif lines_right_lane_boundary_y1_mean > -800 and lines_right_lane_boundary_y1_mean != 0: #-350
             return 45
         else:
             return 90

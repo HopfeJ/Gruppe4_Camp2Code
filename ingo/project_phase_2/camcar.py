@@ -36,7 +36,7 @@ class CamCar(BaseCar):
             self.stop_it = True
 
     def prepare_picture(self, img) -> np.array:
-        img_cut = img[170:380,50:590].copy() # Erste Koordinaten y-Achse von oben nach unten, Zweite Koordinaten X-Achse von links nach rechts
+        img_cut = img[300:400,0:640].copy() # Erste Koordinaten y-Achse von oben nach unten, Zweite Koordinaten X-Achse von links nach rechts (170:380, 50:610)
         return img_cut
     
     def run(self):
@@ -56,7 +56,7 @@ class CamCar(BaseCar):
         self.stop()
         
 if __name__ == "__main__":
-    my_car = CamCar(SteeringController(np.array([90, 0, 0]), np.array([150, 255, 255])))
+    my_car = CamCar(SteeringController(np.array([90, 0, 0]), np.array([150, 255, 255]))) # (Blau von 90 bis 150)
     my_car.run()
     my_car.release_cam()
 
