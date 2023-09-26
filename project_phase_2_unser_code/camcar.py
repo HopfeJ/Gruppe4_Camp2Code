@@ -3,6 +3,8 @@ from basisklassen_cam import Camera
 import cv2 as cv
 import numpy as np
 from time import sleep
+from datetime import datetime
+
 
 def draw_lines(parameter_mask,img):
     img2 = img.copy()
@@ -46,9 +48,14 @@ class CamCar(BaseCar):
         return img
 
     def prepare_picture(self, img):
-        img_cut = img[80:380, 30:610] # Y-Achse, X-Achse
+        img_cut = img[80:380, 0:640] # Y-Achse, X-Achse
         img_cut_hsv = cv.cvtColor(img_cut, cv.COLOR_BGR2HSV)
         return img_cut_hsv
+    
+    def save_with_date(self,img,angle):
+        img_name = f"Bild {datetime.now().replace(microsecond=0)}_Angle_{angle}.png"              
+        img_pfad = f"bilder_nn/{img_name}"
+        cv.imwrite(img_pfad,img)
     
     def calculate_angle_from_picture(self, img):
         # Farbfilter anwenden
@@ -62,12 +69,26 @@ class CamCar(BaseCar):
         found_lines = cv.HoughLines(image_mask, rho, angle, min_threshold)
         lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean = self.calculate_lines_in_lane_boundary(found_lines)
         self.image_hough = draw_lines(found_lines, image_mask)
+
         
-        if lines_left_lane_boundary_y1_mean > 150: # 200
-            return 135
-        elif lines_right_lane_boundary_y1_mean > -350 and lines_right_lane_boundary_y1_mean != 0: #-400
-            return 45
+        if lines_left_lane_boundary_y1_mean > 390: # 200
+            print(round(lines_left_lane_boundary_y1_mean,0))
+            return 125
+        
+        elif lines_right_lane_boundary_y1_mean > -170 and lines_right_lane_boundary_y1_mean != 0: #-400
+            print(round(lines_right_lane_boundary_y1_mean,0))
+            return 55
+
+        elif lines_right_lane_boundary_y1_mean > -300 and lines_right_lane_boundary_y1_mean != 0: #-400
+            print(round(lines_right_lane_boundary_y1_mean,0))
+            return 75
+        
+        elif lines_right_lane_boundary_y1_mean > -380 and lines_right_lane_boundary_y1_mean != 0: #-400
+            print(round(lines_right_lane_boundary_y1_mean,0))
+            return 80
+
         else:
+            print(round(lines_right_lane_boundary_y1_mean,0))
             return 90
 
     def calculate_lines_in_lane_boundary(self, found_lines): 
@@ -122,6 +143,7 @@ class CamCar(BaseCar):
             cv.destroyWindow(window) 
 
     def run(self):
+        counter = 0
         while True:
             if not self.stop_it: 
                 # Bild machen
@@ -133,11 +155,15 @@ class CamCar(BaseCar):
                 # Bild anzeigen
                 self.show_picture(self.image_hough)
                 # Winkel setzen und Auto fahren lassen
-                self.drive(30, 1)
+                #self.drive(30, 1)
                 self.steering_angle = steering_angle
                 print(steering_angle)
-                sleep(0.5)
-                self.steering_angle = 90
+                if counter > 10:
+                    self.save_with_date(img,steering_angle)
+                    counter = 0
+                sleep(0.1)
+                counter +=1
+                
         
 
 if __name__ == "__main__":
