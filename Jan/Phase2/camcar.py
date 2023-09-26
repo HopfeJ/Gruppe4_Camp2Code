@@ -5,7 +5,6 @@ import numpy as np
 from time import sleep
 from datetime import datetime
 
-
 def draw_lines(parameter_mask,img):
     img2 = img.copy()
     img2 = cv.cvtColor(img2, cv.COLOR_GRAY2RGB)
@@ -42,13 +41,14 @@ class CamCar(BaseCar):
         self.cam = Camera()
         self.stop_it = False
         self.image_hough = None
+        print(self.data)
 
     def make_picture(self):
         img = self.cam.get_frame()
         return img
 
     def prepare_picture(self, img):
-        img_cut = img[80:380, 0:640] # Y-Achse, X-Achse
+        img_cut = img[80:380, 30:610] # Y-Achse, X-Achse
         img_cut_hsv = cv.cvtColor(img_cut, cv.COLOR_BGR2HSV)
         return img_cut_hsv
     
@@ -59,8 +59,8 @@ class CamCar(BaseCar):
     
     def calculate_angle_from_picture(self, img):
         # Farbfilter anwenden
-        lower = np.array([95, 0, 0])
-        upper = np.array([125, 255, 255])
+        lower = np.array(self.data['lower'])
+        upper = np.array(self.data['upper'])
         image_mask = cv.inRange(img, lower, upper)
         # Geraden im Bild ermitteln
         rho = 1  # distance precision in pixel, i.e. 1 pixel
@@ -69,7 +69,6 @@ class CamCar(BaseCar):
         found_lines = cv.HoughLines(image_mask, rho, angle, min_threshold)
         lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean = self.calculate_lines_in_lane_boundary(found_lines)
         self.image_hough = draw_lines(found_lines, image_mask)
-
         
         if lines_left_lane_boundary_y1_mean > 390: # 200
             print(round(lines_left_lane_boundary_y1_mean,0))
@@ -90,7 +89,7 @@ class CamCar(BaseCar):
         else:
             print(round(lines_right_lane_boundary_y1_mean,0))
             return 90
-
+        
     def calculate_lines_in_lane_boundary(self, found_lines): 
         lines_right_lane_boundary_y1 = np.array([])
         lines_left_lane_boundary_y1 = np.array([])
@@ -140,31 +139,30 @@ class CamCar(BaseCar):
         key = cv.waitKey(1)
         if key == ord("q"):
             self.stop_it = True
-            cv.destroyWindow(window) 
 
     def run(self):
         counter = 0
         while True:
-            if not self.stop_it: 
-                # Bild machen
-                img = self.make_picture()
-                # Bild schneiden und colorieren
-                prepared_image = self.prepare_picture(img)
-                # Bild übergeben und Steuerwinkel zurückgeben
-                steering_angle = self.calculate_angle_from_picture(prepared_image)
-                # Bild anzeigen
-                self.show_picture(self.image_hough)
-                # Winkel setzen und Auto fahren lassen
-                #self.drive(30, 1)
-                self.steering_angle = steering_angle
-                print(steering_angle)
-                if counter > 10:
-                    self.save_with_date(img,steering_angle)
-                    counter = 0
-                sleep(0.1)
-                counter +=1
-                
-        
+            if self.stop_it: 
+                break
+            # Bild machen
+            img = self.make_picture()
+            # Bild schneiden und colorieren
+            prepared_image = self.prepare_picture(img)
+            # Bild übergeben und Steuerwinkel zurückgeben
+            steering_angle = self.calculate_angle_from_picture(prepared_image)
+            # Bild anzeigen
+            self.show_picture(self.image_hough)
+            # Winkel setzen und Auto fahren lassen
+            self.drive(35, 1)
+            self.steering_angle = steering_angle
+            print(steering_angle)
+            if counter > 10:
+                self.save_with_date(img,steering_angle)
+                counter =0
+            sleep(0.1)
+            counter +=1
+        self.stop()
 
 if __name__ == "__main__":
     my_car = CamCar()
