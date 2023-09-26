@@ -70,10 +70,17 @@ class CamCar(BaseCar):
         lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean = self.calculate_lines_in_lane_boundary(found_lines)
         self.image_hough = draw_lines(found_lines, image_mask)
 
-        
-        if lines_left_lane_boundary_y1_mean > 390: # 200
+        if lines_left_lane_boundary_y1_mean > 490: # 200
             print(round(lines_left_lane_boundary_y1_mean,0))
-            return 125
+            return 135
+
+        elif lines_left_lane_boundary_y1_mean > 350: # 200
+            print(round(lines_left_lane_boundary_y1_mean,0))
+            return 120
+        
+        elif lines_left_lane_boundary_y1_mean > 310 :
+            print(round(lines_left_lane_boundary_y1_mean,0))
+            return 105
         
         elif lines_right_lane_boundary_y1_mean > -170 and lines_right_lane_boundary_y1_mean != 0: #-400
             print(round(lines_right_lane_boundary_y1_mean,0))
