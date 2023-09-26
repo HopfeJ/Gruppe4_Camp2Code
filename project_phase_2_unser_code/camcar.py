@@ -145,24 +145,27 @@ class CamCar(BaseCar):
     def run(self):
         counter = 0
         while True:
-            if not self.stop_it: 
-                # Bild machen
-                img = self.make_picture()
-                # Bild schneiden und colorieren
-                prepared_image = self.prepare_picture(img)
-                # Bild übergeben und Steuerwinkel zurückgeben
-                steering_angle = self.calculate_angle_from_picture(prepared_image)
-                # Bild anzeigen
-                self.show_picture(self.image_hough)
-                # Winkel setzen und Auto fahren lassen
-                #self.drive(30, 1)
-                self.steering_angle = steering_angle
-                print(steering_angle)
-                if counter > 10:
-                    self.save_with_date(img,steering_angle)
-                    counter = 0
-                sleep(0.1)
-                counter +=1
+            if  self.stop_it: 
+                break
+            # Bild machen
+            img = self.make_picture()
+            # Bild schneiden und colorieren
+            prepared_image = self.prepare_picture(img)
+            # Bild übergeben und Steuerwinkel zurückgeben
+            steering_angle = self.calculate_angle_from_picture(prepared_image)
+            # Bild anzeigen
+            self.show_picture(self.image_hough)
+            # Winkel setzen und Auto fahren lassen
+            self.drive(30, 1)
+            self.steering_angle = steering_angle
+            print(steering_angle)
+            if counter > 10:
+                self.save_with_date(img,steering_angle)
+                counter = 0
+            sleep(0.1)
+            counter +=1
+
+        self.stop()
                 
         
 
