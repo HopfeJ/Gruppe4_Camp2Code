@@ -59,8 +59,8 @@ class CamCar(BaseCar):
     
     def calculate_angle_from_picture(self, img):
         # Farbfilter anwenden
-        lower = np.array([95, 0, 0])
-        upper = np.array([125, 255, 255])
+        lower = np.array(self.data['lower'])
+        upper = np.array(self.data['upper'])
         image_mask = cv.inRange(img, lower, upper)
         # Geraden im Bild ermitteln
         rho = 1  # distance precision in pixel, i.e. 1 pixel
@@ -156,7 +156,7 @@ class CamCar(BaseCar):
             # Bild anzeigen
             self.show_picture(self.image_hough)
             # Winkel setzen und Auto fahren lassen
-            self.drive(30, 1)
+            # self.drive(30, 1)
             self.steering_angle = steering_angle
             print(steering_angle)
             if counter > 10:
