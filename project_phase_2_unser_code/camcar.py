@@ -4,7 +4,6 @@ import cv2 as cv
 import numpy as np
 from time import sleep
 
-
 def draw_lines(parameter_mask,img):
     img2 = img.copy()
     img2 = cv.cvtColor(img2, cv.COLOR_GRAY2RGB)
@@ -41,7 +40,6 @@ class CamCar(BaseCar):
         self.cam = Camera()
         self.stop_it = False
         self.image_hough = None
-        print(self.data)
 
     def make_picture(self):
         img = self.cam.get_frame()
@@ -54,8 +52,8 @@ class CamCar(BaseCar):
     
     def calculate_angle_from_picture(self, img):
         # Farbfilter anwenden
-        lower = np.array(self.data['lower'])
-        upper = np.array(self.data['upper'])
+        lower = np.array([95, 0, 0])
+        upper = np.array([125, 255, 255])
         image_mask = cv.inRange(img, lower, upper)
         # Geraden im Bild ermitteln
         rho = 1  # distance precision in pixel, i.e. 1 pixel
@@ -121,26 +119,26 @@ class CamCar(BaseCar):
         key = cv.waitKey(1)
         if key == ord("q"):
             self.stop_it = True
+            cv.destroyWindow(window) 
 
     def run(self):
         while True:
-            if self.stop_it: 
-                break
-            # Bild machen
-            img = self.make_picture()
-            # Bild schneiden und colorieren
-            prepared_image = self.prepare_picture(img)
-            # Bild übergeben und Steuerwinkel zurückgeben
-            steering_angle = self.calculate_angle_from_picture(prepared_image)
-            # Bild anzeigen
-            self.show_picture(self.image_hough)
-            # Winkel setzen und Auto fahren lassen
-            self.drive(30, 1)
-            self.steering_angle = steering_angle
-            print(steering_angle)
-            sleep(0.5)
-            self.steering_angle = 90
-        self.stop()
+            if not self.stop_it: 
+                # Bild machen
+                img = self.make_picture()
+                # Bild schneiden und colorieren
+                prepared_image = self.prepare_picture(img)
+                # Bild übergeben und Steuerwinkel zurückgeben
+                steering_angle = self.calculate_angle_from_picture(prepared_image)
+                # Bild anzeigen
+                self.show_picture(self.image_hough)
+                # Winkel setzen und Auto fahren lassen
+                self.drive(30, 1)
+                self.steering_angle = steering_angle
+                print(steering_angle)
+                sleep(0.5)
+                self.steering_angle = 90
+        
 
 if __name__ == "__main__":
     my_car = CamCar()
