@@ -55,6 +55,7 @@ class DeepCar(CamCar):
         
         
         self.stop()
+        self.stop_cam()
 
 if __name__ == "__main__":
     my_car = DeepCar()

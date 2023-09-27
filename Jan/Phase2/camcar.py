@@ -43,6 +43,9 @@ class CamCar(BaseCar):
         self.image_hough = None
         print(self.data)
 
+    def stop_cam(self):
+        self.cam.release()    
+
     def make_picture(self):
         img = self.cam.get_frame()
         return img
@@ -175,6 +178,7 @@ class CamCar(BaseCar):
                 counter =0
             counter +=1
         self.stop()
+        self.stop_cam()
 
 if __name__ == "__main__":
     my_car = CamCar()
