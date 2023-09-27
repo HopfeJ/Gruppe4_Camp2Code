@@ -10,14 +10,20 @@ import tensorflow as tf
 
 class DeepCar(CamCar):
 
+    def __init__(self):
+        super().__init__()
+
     def load_model(self):
         path_to_model_file = './DEMO_MODEL'
         self.model_loaded = tf.keras.models.load_model(path_to_model_file)
-        #model_loaded.layers[0].input_shape
+        #
 
     def calculate_angle_from_nn(self, img):
-        angle = self.model_loaded(img).numpy()
-        print(angle)
+        img_np_array = np.array([img]) 
+        evaluated = self.model_loaded(img_np_array).numpy()
+        print(round(evaluated[0][0]))
+        return round(evaluated[0][0])
+        
 
     def resize_picture(self,img):
         dim = (320,150)
@@ -38,12 +44,12 @@ class DeepCar(CamCar):
             prepared_image = self.prepare_picture(img)
             # Bild übergeben und größe ändern
             resize_image = self.resize_picture(prepared_image)
-            self.calculate_angle_from_nn(resize_image)
+            
             self.show_picture(resize_image)
 
-            #steering_angle = 
+            self.steering_angle = self.calculate_angle_from_nn(resize_image)
             # Winkel setzen und Auto fahren lassen
-          
+            self.drive(40,1)
             #self.steering_angle = steering_angle
         
         
