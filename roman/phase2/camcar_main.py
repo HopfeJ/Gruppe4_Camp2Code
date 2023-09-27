@@ -7,28 +7,40 @@ import time
 
 car = CamCar()
 
-car.drive(30, 1)
+car.drive(30, 1) # fährt bis 40
 car.steering_angle = 90
 
 # Video-Schleife
+counter = 0
 while True:
-    img = car.get_prep_image()
-    line_segments = car.calc_line_segments(img)
-    print(line_segments)
+    img = car.take_picture()
+    prep_img = car.get_prep_image(img, 100,370,0,640)
+    line_segments = car.calc_line_segments(prep_img)
+    #print(line_segments)
     
     if line_segments is not None:
-        linien = car.teile_linien(img, line_segments)
-        print('Avg Steigung und Schnittpunkt:')
-        print(linien)
-        leitlinie = car.calc_leitlinie(img, linien)
-        imageresult = car.draw_line_segments(linien, leitlinie, img)
-        lenkwinkel = car.calc_steering_angle(img, linien)
-        car.steering_angle = lenkwinkel
-        cv.imshow("Display window (press q to quit)", imageresult)
+        linien = car.calc_fahrbahnlinien(prep_img, line_segments)
+        leitlinie = car.calc_leitlinie(prep_img, linien)
+        imageresult = car.draw_line_segments(linien, leitlinie, prep_img)
+        aktueller_lenkwinkel = car.steering_angle
+        errechneter_lenkwinkel = car.calc_steering_angle(prep_img, linien)
+        print('aktueller Lenkwinkel:', aktueller_lenkwinkel, type(aktueller_lenkwinkel))
+        print('errechneter Lenkwinkel: ', errechneter_lenkwinkel, type(aktueller_lenkwinkel))
+
+        car.steering_angle = errechneter_lenkwinkel
+        print('gesetzter Lenkwinkel: ', car.steering_angle)
+        cv.namedWindow("MeinFenster", cv2.WINDOW_NORMAL)
+        cv.resizeWindow("MeinFenster", 800, 600)
+        cv.imshow("MeinFenster", imageresult)
         # Ende bei Drücken der Taste q
         if cv.waitKey(1) == ord('q'):
             break
-        time.sleep(0.3)
+        time.sleep(0.05)
+        if counter > 3: # nur alle 10 Durchläufe Bild speichern
+            car.save_with_date(img, errechneter_lenkwinkel)
+            counter = 0
+
+        counter +=1 
     
     else:
         car.stop()
