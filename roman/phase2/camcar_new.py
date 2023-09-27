@@ -16,13 +16,14 @@ class CamCar(BaseCar):
         super().__init__(config)
         self.cam = Camera()
     
+    def take_picture(self):
+        img = self.cam.get_frame()                          # Foto aufnehmen
+        return img
 
-    def get_prep_image(self,x1,x2,y1,y2):
+    def get_prep_image(self, img, x1, x2, y1, y2):
         # Werte f+r Blau-Anteil im HSV-Farbraum (360 Grad / 2)
         lower = np.array(self.data['lower'])
         upper = np.array(self.data['upper'])
-
-        img = self.cam.get_frame()                          # Foto aufnehmen
         print(img.shape)
         img_cut = img[x1:x2,y1:y2].copy()                # Foto beschneiden [200:400,20:620]
         #img_cut = img.copy()
@@ -174,6 +175,11 @@ class CamCar(BaseCar):
         if leitlinie is not None:
             cv.line(img2,(leitlinie[0][0], leitlinie[0][1]), (leitlinie[0][2], leitlinie[0][3]),(0,0,255),3) # Leitlinie einzeichnen
         return img2
+
+    def save_with_date(self, img, angle):
+        img_name = f"Bild {datetime.now().replace(microsecond=0)}_Angle_{angle}.png"              
+        img_pfad = f"bilder_nn/{img_name}"
+        cv.imwrite(img_pfad, img)
 
     def close(self):
         self.cam.release()
