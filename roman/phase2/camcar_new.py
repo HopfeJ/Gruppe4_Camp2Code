@@ -8,6 +8,7 @@ import time
 import csv
 import math
 from datetime import datetime
+import tensorflow as tf
 
 
 class CamCar(BaseCar):
@@ -20,17 +21,25 @@ class CamCar(BaseCar):
         img = self.cam.get_frame()                          # Foto aufnehmen
         return img
 
-    def get_prep_image(self, img, x1, x2, y1, y2):
+    def resize_image(self, img, x1, x2, y1, y2):
+        # Größe Bildausschnitt: # 100,370,0,640
+        # eingangsgröße Bild: 640, 480
+        img_cut = img[x1:x2,y1:y2].copy()                
+        # neue größe nach zuschneiden: 270, 640
+        # fürs training des nn die hälfte nehmen: 135, 320
+        #dim = img_cut.shape
+        #dim = (320,240) # Bildgröße muss dem des Autos entsprechen!
+        interpolation = cv2.INTER_AREA
+        img_cut = cv2.resize(img_cut, (320, 135), interpolation)
+        return img_cut
+
+    def get_prep_image(self, img):
         # Werte f+r Blau-Anteil im HSV-Farbraum (360 Grad / 2)
         lower = np.array(self.data['lower'])
         upper = np.array(self.data['upper'])
-        print(img.shape)
-        img_cut = img[x1:x2,y1:y2].copy()                # Foto beschneiden [200:400,20:620]
-        #img_cut = img.copy()
-        img_cut_HSV = cv.cvtColor(img_cut,cv.COLOR_BGR2HSV) # in HSV-Raum umwandeln
+        img_cut_HSV = cv.cvtColor(img,cv.COLOR_BGR2HSV) # in HSV-Raum umwandeln
         image_mask = cv.inRange(img_cut_HSV, lower, upper)  # blau-Anteil maskieren
         image_edges = cv.Canny(image_mask,200,400)          # Kanten der Blau-Maske ermitteln
-
         return image_edges
 
     def calc_line_segments(self, image_edges):
@@ -42,7 +51,7 @@ class CamCar(BaseCar):
         line_segments = cv.HoughLinesP(image_edges, rho, angle, min_threshold, np.array([]), minLineLength=minLineLength, maxLineGap=maxLineGap)
         return line_segments
 
-    def calc_linie(self, image_edges, line):
+    def calc_linie(self, image_edges, line): # Helper-Function für calc_fahrbahnlinien
         höhe, breite = image_edges.shape
         slope, intercept = line
         y1 = höhe  # unterer Rand des Bildes
@@ -110,7 +119,7 @@ class CamCar(BaseCar):
         return fahrbahnlinien
     
     def calc_leitlinie(self, img, fahrbahnlinien):
-        # Leitlinie
+        # Leitlinie erzeugen
         leitlinie = []
         höhe, breite = img.shape
 
@@ -134,7 +143,7 @@ class CamCar(BaseCar):
         #print(leitlinie)
         return leitlinie
     
-    def calc_steering_angle(self, frame, fahrbahnlinien):
+    def calc_steering_angle_from_cam(self, frame, fahrbahnlinien):
 
         if len(fahrbahnlinien) == 0:
             print('Keine Linien gefunden -> nicht lenken.')
@@ -163,7 +172,7 @@ class CamCar(BaseCar):
         #print('new steering angle: %s' % steering_angle)
         return steering_angle
     
-    
+   
 
     def draw_line_segments(self, line_segments, leitlinie, img):
         img2 = img.copy()
@@ -185,6 +194,23 @@ class CamCar(BaseCar):
         self.cam.release()
         print('Camera from car released')
     
+class DeepCar(CamCar):
+
+    def __init__(self, config: str = "config.json"):
+        super().__init__(config)
+        self.model = self.load_model()
+
+    def load_model(self):
+        # Laden eines Modells
+        path_to_model_file = './Model_v3.h5'
+        model_loaded = tf.keras.models.load_model(path_to_model_file)
+        return model_loaded
+    
+    def get_steering_angle_from_nn(self, resized_image):
+        xe = np.array( [resized_image] )
+        xe.shape
+        angle = xe
+        return angle
 
     
     

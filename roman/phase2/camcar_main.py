@@ -14,7 +14,8 @@ car.steering_angle = 90
 counter = 0
 while True:
     img = car.take_picture()
-    prep_img = car.get_prep_image(img, 100,370,0,640)
+    resized_img = car.resize_image(img, 100,370,0,640)
+    prep_img = car.get_prep_image(resized_img)
     line_segments = car.calc_line_segments(prep_img)
     #print(line_segments)
     
@@ -23,7 +24,7 @@ while True:
         leitlinie = car.calc_leitlinie(prep_img, linien)
         imageresult = car.draw_line_segments(linien, leitlinie, prep_img)
         aktueller_lenkwinkel = car.steering_angle
-        errechneter_lenkwinkel = car.calc_steering_angle(prep_img, linien)
+        errechneter_lenkwinkel = car.calc_steering_angle_from_cam(prep_img, linien)
         print('aktueller Lenkwinkel:', aktueller_lenkwinkel, type(aktueller_lenkwinkel))
         print('errechneter Lenkwinkel: ', errechneter_lenkwinkel, type(aktueller_lenkwinkel))
 
