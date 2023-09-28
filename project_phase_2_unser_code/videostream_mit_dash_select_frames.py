@@ -40,13 +40,13 @@ right_column = html.Div([html.Img(src="/video_feed", style={'width': '70%', "bor
 
 left_column = html.Div(dcc.Dropdown([1,2,3], 1, clearable=False, 
                                     id='dropdown',
-                                    style={'width': '90%', "border": "1px gray solid", "padding-left": "10%" }))
+                                    style={'width': '90%', "padding-left": "10%" }))
 
 app.layout = html.Div([
     dbc.Row(headline),
     dbc.Row([
-        dbc.Col(left_column, width=3, style={'width': '30%', "border": "1px gray dotted"}),
-        dbc.Col(right_column, width=9, style={'width': '70%', "border": "1px gray dotted"})
+        dbc.Col(left_column, width=3, style={'width': '30%'}),
+        dbc.Col(right_column, width=9, style={'width': '70%'})
     ]),
     dbc.Row(f"Example class: {my_car.__class__}"),
     dbc.Button("Start", color="success", id="start"),
