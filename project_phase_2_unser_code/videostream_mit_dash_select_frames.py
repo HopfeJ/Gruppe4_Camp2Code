@@ -32,10 +32,10 @@ def video_feed():
 # Layout
 # Das Layout enthält ein Dropdownmenu, welches zur Auswahl der Car - Klasse dient.
 headline = [
-    dbc.Row([html.H1("Group4success", style={"textAlign": "left"})])
+    dbc.Row([html.H1("Group4trouble", style={"textAlign": "left"})])
 ]
 
-right_column = html.Div([html.Img(src="/video_feed", style={'width': '70%', "border": "2px black solid", "padding-left": "10%"})])
+right_column = html.Div([html.Img(src="/video_feed", style={'width': '70%', "padding-left": "10%"})])
 
 
 left_column = html.Div(dcc.Dropdown([1,2,3], 1, clearable=False, 
