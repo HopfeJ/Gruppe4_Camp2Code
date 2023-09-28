@@ -14,7 +14,7 @@ class DeepCar(CamCar):
         super().__init__()
 
     def load_model(self):                                               # Laden des models
-        path_to_model_file = './DEMO_MODEL'                             # Hier wird der Pfad angegeben in dem sich das Model befindet
+        path_to_model_file = self.data['modell']                             # Hier wird der Pfad angegeben in dem sich das Model befindet
         self.model_loaded = tf.keras.models.load_model(path_to_model_file)
         
 
@@ -55,7 +55,7 @@ class DeepCar(CamCar):
         
         
         self.stop()
-        self.stop_cam()
+       
 
 if __name__ == "__main__":
     my_car = DeepCar()
