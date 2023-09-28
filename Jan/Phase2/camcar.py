@@ -43,12 +43,15 @@ class CamCar(BaseCar):
         self.image_hough = None
         print(self.data)
 
+    def stop_cam(self):
+        self.cam.release()    
+
     def make_picture(self):
         img = self.cam.get_frame()
         return img
 
     def prepare_picture(self, img):
-        img_cut = img[80:380, 30:610] # Y-Achse, X-Achse
+        img_cut = img[80:380, 0:640] # Y-Achse, X-Achse
         img_cut_hsv = cv.cvtColor(img_cut, cv.COLOR_BGR2HSV)
         return img_cut_hsv
     
@@ -70,32 +73,37 @@ class CamCar(BaseCar):
         lines_left_lane_boundary_y1_mean, lines_right_lane_boundary_y1_mean = self.calculate_lines_in_lane_boundary(found_lines)
         self.image_hough = draw_lines(found_lines, image_mask)
         
-        if lines_left_lane_boundary_y1_mean > 490: # 200
-            print(round(lines_left_lane_boundary_y1_mean,0))
+        if lines_left_lane_boundary_y1_mean > 550: # 200
+            print('links',round(lines_left_lane_boundary_y1_mean,0))
             return 135
 
-        elif lines_left_lane_boundary_y1_mean > 350: # 200
-            print(round(lines_left_lane_boundary_y1_mean,0))
+        elif lines_left_lane_boundary_y1_mean > 480: # 200
+            print('links',round(lines_left_lane_boundary_y1_mean,0))
             return 120
         
-        elif lines_left_lane_boundary_y1_mean > 310 :
-            print(round(lines_left_lane_boundary_y1_mean,0))
-            return 105
+        elif lines_left_lane_boundary_y1_mean > 420 :
+            print('links',round(lines_left_lane_boundary_y1_mean,0))
+            return 100
 
-        elif lines_right_lane_boundary_y1_mean > -170 and lines_right_lane_boundary_y1_mean != 0: #-400
-            print(round(lines_right_lane_boundary_y1_mean,0))
+        elif lines_right_lane_boundary_y1_mean > -190 and lines_right_lane_boundary_y1_mean != 0: #-400
+            print('rechts',round(lines_right_lane_boundary_y1_mean,0))
             return 55
 
         elif lines_right_lane_boundary_y1_mean > -300 and lines_right_lane_boundary_y1_mean != 0: #-400
-            print(round(lines_right_lane_boundary_y1_mean,0))
+            print('rechts',round(lines_right_lane_boundary_y1_mean,0))
             return 75
         
         elif lines_right_lane_boundary_y1_mean > -380 and lines_right_lane_boundary_y1_mean != 0: #-400
-            print(round(lines_right_lane_boundary_y1_mean,0))
+            print('rechts',round(lines_right_lane_boundary_y1_mean,0))
+            return 80
+
+        elif lines_right_lane_boundary_y1_mean < -580 and lines_right_lane_boundary_y1_mean != 0: #-400
+            print('rechts',round(lines_right_lane_boundary_y1_mean,0))
             return 80
 
         else:
-            print(round(lines_left_lane_boundary_y1_mean,0))
+            print('links',round(lines_left_lane_boundary_y1_mean,0))
+            print('rechts',round(lines_right_lane_boundary_y1_mean,0))
             return 90
         
     def calculate_lines_in_lane_boundary(self, found_lines): 
@@ -165,12 +173,12 @@ class CamCar(BaseCar):
             self.drive(35, 1)
             self.steering_angle = steering_angle
             print(steering_angle)
-            if counter > 10:
+            if counter > 4:
                 self.save_with_date(img,steering_angle)
                 counter =0
-            #sleep(0.2)
             counter +=1
         self.stop()
+        self.stop_cam()
 
 if __name__ == "__main__":
     my_car = CamCar()
