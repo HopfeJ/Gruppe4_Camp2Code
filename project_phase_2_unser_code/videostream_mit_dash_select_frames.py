@@ -5,10 +5,10 @@ from flask import Flask, Response
 import plotly.express as px
 import cv2
 import numpy as np
-from camcar import CamCar
-from steering_controller_classic import SteeringController
+from deepcar import DeepCar
 
-my_car = CamCar(SteeringController(np.array([90, 0, 0]), np.array([150, 255, 255])))
+
+my_car = DeepCar()
 # APPLIKATION
 # Siehe auch Minimalbeispiel
 server = Flask(__name__)

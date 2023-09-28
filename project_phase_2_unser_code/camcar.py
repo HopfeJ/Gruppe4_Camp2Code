@@ -41,11 +41,16 @@ class CamCar(BaseCar):
         super().__init__()
         self.cam = Camera()
         self.stop_it = False
+        self.image = np.zeros((150,320,3))
         self.image_hough = None
 
     def make_picture(self):
         img = self.cam.get_frame()
+        self.image = cv.resize(img, (320,150), cv.INTER_AREA)
         return img
+
+    def get_last_frame(self):
+        return self.image
 
     def prepare_picture(self, img):
         img_cut = img[80:380, 0:640] # Y-Achse, X-Achse
@@ -149,7 +154,11 @@ class CamCar(BaseCar):
             self.stop_it = True
             cv.destroyWindow(window) 
 
+    def stop_run(self):
+        self.stop_it = True
+
     def run(self):
+        self.stop_it = False
         counter = 0
         while True:
             if  self.stop_it: 

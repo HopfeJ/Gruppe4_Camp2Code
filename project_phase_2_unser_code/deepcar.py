@@ -12,6 +12,7 @@ class DeepCar(CamCar):
 
     def __init__(self):
         super().__init__()
+        self.load_model()
 
     def load_model(self):                                               # Laden des models
         path_to_model_file = self.data['modell']                             # Hier wird der Pfad angegeben in dem sich das Model befindet
@@ -34,7 +35,7 @@ class DeepCar(CamCar):
 
 
     def run(self):
-        self.load_model()
+        self.stop_it = False
         while True:
             if self.stop_it: 
                 break
@@ -45,7 +46,7 @@ class DeepCar(CamCar):
             # Bild übergeben und größe ändern
             resize_image = self.resize_picture(prepared_image)
             # zeigt das Bild an
-            self.show_picture(resize_image)
+            # self.show_picture(resize_image)
             # das verkleinerte bild an die winkelberechnung übergeben
             # Winkel setzen und Auto fahren lassen
             self.steering_angle = self.calculate_angle_from_nn(resize_image)
