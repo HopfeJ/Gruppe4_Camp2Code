@@ -50,7 +50,7 @@ class DeepCar(CamCar):
             # Winkel setzen und Auto fahren lassen
             self.steering_angle = self.calculate_angle_from_nn(resize_image)
             # Geschwindigkeit setzen
-            self.drive(30,1)
+            #self.drive(30,1)
             
         
         
