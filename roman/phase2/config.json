@@ -3,5 +3,6 @@
     "forward_A": 0,
     "forward_B": 0,
     "upper": [125, 255, 255],
-    "lower": [100, 100, 0]
+    "lower": [100, 100, 0],
+    "modell": "../Jan/Phase2/DEMO_MODELL"
 }
