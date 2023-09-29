@@ -30,7 +30,7 @@ def hsv_helper():
     while(1):
         ret, frame = cap.read()
         height, width, _ = frame.shape
-        img = cv2.resize(frame,(int(width*2/3), int(height*2/3)), interpolation = cv2.INTER_CUBIC)
+        img = cv2.resize(frame,(int(width*2/3), int(height*2/3)), interpolation = cv2.INTER_CUBIC) #  Größe des Optimizers
         # get current positions of all trackbars
         hMin = cv2.getTrackbarPos('HMin',window_id)
         sMin = cv2.getTrackbarPos('SMin',window_id)
