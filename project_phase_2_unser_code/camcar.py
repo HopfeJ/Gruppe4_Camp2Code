@@ -163,13 +163,12 @@ class CamCar(BaseCar):
             # Bild anzeigen
             self.show_picture(self.image_hough)
             # Winkel setzen und Auto fahren lassen
-            # self.drive(30, 1)
+            self.drive(33, 1)
             self.steering_angle = steering_angle
             print(steering_angle)
             if counter > 10:
                 self.save_with_date(img,steering_angle)
                 counter = 0
-            sleep(0.1)
             counter +=1
 
         self.stop()
