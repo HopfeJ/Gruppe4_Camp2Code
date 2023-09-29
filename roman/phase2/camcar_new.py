@@ -201,11 +201,7 @@ class DeepCar(CamCar):
         self.model = self.load_model()
 
     def load_model(self):
-        # Laden eines Modells
-        # Laden eines Modells
-        # path_to_model_file = './Model_v3.h5'
-        # model_loaded = tf.keras.models.load_model(path_to_model_file)   
-        # return model_loaded
+
         pass
     
     def get_steering_angle_from_nn(self, resized_image):
